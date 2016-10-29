@@ -9,6 +9,7 @@ build/
 cs5100/cheisler/
 cs5600/src/examples/
 cs5600/src/filesys/db
+cs5600/src/tests/
 *.class
 *.csv
 *.d
