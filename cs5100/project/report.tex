@@ -1,0 +1,150 @@
+\documentclass[12pt]{article}
+\title{Naive Bayes for Classifying NationStates Regions}
+\author{Charles Heisler -- CS5100 -- 12/14/2015}
+\date{}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{environ}
+\usepackage{pbox}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+NationStates is an online browser game where players create and decide issues for custom nations. All such nations reside in one of the games many regions. While the central game play is a political simulation, some of the game's mechanics have created an ongoing conflict between so-called \textbf{raiders} and \textbf{defenders}. As the names imply, raiders attempt to forcibly seize regions while defenders seek to stop them or to liberate already captured regions. The conflict is, however, deeply asymmetric. Raiders enjoy the advantage of surprise and can easily reinforce a region once captured. Effective defending requires spotting and responding properly to raider activity in hundreds of vulnerable regions.
+
+This project focuses on the task of identifying when a region has been taken by raiders. Its goal is to use machine learning to, given information on a set of regions, automatically assign each a class $y \in \left\{0,1\right\}$, with $y=1$ corresponding to a region which has been raided and $y=0$ corresponding to one that has not. To accomplish this task, a naive Bayes classifier was implemented. This algorithm was chosen because of its simplicity and because it has been successfully used to classify text in other settings.
+
+\section{Technical}
+This project was coded in Python. The Django framework was used to create a database backend for storing data points and trained classifiers as well as a simple web interface for labeling new data points. The Numpy package for Python was used for efficiently storing and performing calculations on arrays of values corresponding to feature values, probabilities and scores. While a number of configuration and utility files have been submitted with this project for thoroughness, the bulk of the classifier code lives in the following four Python modules:
+
+\begin{enumerate}
+\item \texttt{defender/overwatch/models.py}
+\item \texttt{defender/overwatch/management/commands/loadnsdump.py}
+\item \texttt{defender/overwatch/management/commands/bayes.py}
+\item \texttt{defender/overwatch/util.py}
+\end{enumerate}
+
+\noindent These files contain the code for representing and using region data and Bayes classifiers, code for retrieving data from NationStates, code for training and testing Bayes classifiers and code for helper functions respectively.
+
+\section{Data}
+Data was gathered primarily from the daily dumps of region data that NationStates publishes in XML format. Data which was absent from the dumps was instead retrieved by querying the NationStates API. While there are roughly 19,000 regions in the game, only those which were vulnerable to raiders were considered. These were regions lacking a password to enter the region and without a regional founder capable of ejecting raiders. Initially information on 690 such regions was extracted from a single daily dump and manually labeled.
+
+\section{Features}
+All regions in NationStates have a \textbf{world factbook entry} describing the region, \textbf{embassies} which it has established with other regions, and \textbf{tags} which may be assigned by either players or the game. When raiders take a region, they will update all of these, so they are a natural choice from which to draw features for a classifier. To simplify calculating the conditional probabilities, the features were limited to binary ones. These features indicate whether a word appears in the region's factbook, whether the region has an embassy with another region or whether the region has a given tag.
+
+6,095 unique words, embassies and tags occurring in at least one region were found in the initial set of labeled data. Two methods were tried to score these features and pick a limited subset to use. The first of these was to calculate a \textbf{chi-square score} $\chi^2_j$ for each feature $f_j$ as
+\[
+	\chi^2_j=\sum_{t\in\left\{0,1\right\}}\sum_{c\in\left\{0,1\right\}}\frac{\left(N_{t,c}-E_{t,c}\right)^2}{E_{t,c}}
+\]
+\noindent where $N_{t,c}$ is the number of times feature value $f_j=t$ occurs with class $y=c$ and $E_{t,c}$ is the expected number of times feature value $f_j=t$ would occur with class $y=c$ if the feature and class were independent.
+
+The second method was a  modified version of the \textbf{RELIEF algorithm}. For each feature $f_j$ a score $w_j$ was initialized as $0$. Then for $N$ random data points $x_i$, each score $w_j$ was updated as
+\[
+	w_j\leftarrow w_j-(x_{i,j} - x_{SAME,j})^2 + (x_{i,j} - x_{OPP,j})^2
+\]
+\noindent where $x_{z,j}$ is the value of $f_j$ for data point $x_z$ and $x_{SAME}$ and $x_{OPP}$ are data points with the same and opposite labels as $x_i$. In the typical RELIEF algorithm, these two values chosen to be the closest neighbors of $x_i$ with the same and opposite label. For this project they were instead chosen randomly for speed and simplicity.
+
+Using 256 features, both picking features based on their chi-square scores and their RELIEF scores outperformed randomly selecting features, with RELIEF doing slightly better than chi-square scores. The full results are detailed in Table 1.
+
+\begin{table*}\centering
+	\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{@{}m{4cm}m{4cm}m{4cm}@{}}
+			\toprule
+			\textbf{Method} & \textbf{Training Error} & \textbf{Test Error} \\
+			\midrule
+			Random & 0.050933 & 0.138455 \\
+			Chi-square & 0.019389 & 0.024769 \\
+			RELIEF & 0.014126 & 0.018895 \\
+			\bottomrule
+		\end{tabular}
+	\caption{Performances for 256 features selected by various methods.}
+\end{table*}
+
+\section{Training}
+Because both the classes and features were binary, only three sets of value had to be calculated during training. These were the prior probability $p(y=1)$ and the conditional probabilities for each feature $p(f_j=1 \vert y=0)$ and $p(f_j=1 \vert y=1)$. The complimentary probabilities $p(y=0)$, $p(f_j=0 \vert y=0)$ and $p(f_j=0 \vert y=1)$ could then be found by subtracting from $1$.
+
+Each conditional probability for feature $f_j=1$ given $y=c$ was calculated as
+
+\[
+	p(f_j=1 \vert y=c) = \frac{N_{1,c}+\alpha}{N_{c}+\alpha D}
+\]
+
+\noindent where $N_{1,c}$ is the number of times feature value $f_j=1$ and class $y=c$ co-occur, $N_{c}$ is the number of times class $y=c$ occurs, $D$ is the number of features and $\alpha \geq 0$ is an additive smoothing constant. Using the same smoothing, the prior $p(y=1)$ was calculated as
+
+\[
+	p(y=1) = \frac{N_1+\alpha D}{N_0 + N_1 + 2 \alpha D}.
+\]
+Classifiers were trained on 90\% of the labeled data selected at random. The remaining 10\% was held out for testing.
+
+\section{Active Learning}
+The goal of this project was to ease the arduous task of determining whether or not a region had been raided by automating it. However, since NationStates does not label regions as raided or not raided, the data points for the learner must still be labeled manually. If many points must be labeled for the classifier to generalize well, then this new task of manually labeling data risks becoming no less tedious than the original task of looking at regions in game.
+
+To address this problem, \textbf{active learning} was attempted, whereby a previously trained classifier is used to assign a margin $m_i$ to each unlabeled data point $x_i$. This margin measures how close a data point is to the decision boundary of a classifier. The data points closest to the boundary can then be selected for manual labeling, as they are more likely to shift where it lies.
+
+For the binary naive Bayesian classifier used in this project, the margin $m_i$ for each unlabeled data point $x_i$ was calculated as the absolute difference of the normalized classifier probabilities for $y_i=0$ and $y_i=1$
+\[
+	m_i = \lvert \eta p\left(x_i \vert y_i=0\right)p\left(y_i=0\right) - \eta p\left(x_i \vert y_i=1\right)p\left(y_i=1\right)\rvert
+\]
+\noindent where $\eta$ is a normalizing factor
+\[
+	\eta = \left(p\left(x_i \vert y_i=0\right)p\left(y_i=0\right) + p\left(x_i \vert y_i=1\right)p\left(y_i=1\right)\right)^{-1}.
+\]
+	After training an initial classifier using the initial 690 data points, another 2,138 data points were retrieved. The initial classifier was then used to assign a margin to each unlabeled data point. 50 data points with the lowest margins were labeled, a new classifier was trained and tested, and the margins were recalculated. This was repeated for 10 iterations. Then the newly labeled data points were reset and for comparison 10 iterations of labeling and training on 50 randomly selected data points was tried instead.
+
+\begin{table*}\centering
+	\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{@{}m{2cm}m{2.5cm}m{2.5cm}m{2.5cm}m{2.5cm}@{}}
+			\toprule
+			\textbf{\pbox{2cm}{Data \\ points}} & \textbf{\pbox{2.5cm}{Training \\ (Active)}} & \textbf{\pbox{2.5cm}{Test \\ (Active)}} & \textbf{\pbox{2.5cm}{Training (Random)}} & \textbf{\pbox{2.5cm}{Test \\ (Random)}} \\
+			\midrule
+			690 & 0.014377 & 0.031250 & 0.014377 & 0.031250 \\
+			740 & 0.015326 & 0.027551 & 0.013009 & 0.014166 \\
+			790 & 0.011653 & 0.017925 & 0.012293 & 0.022572 \\
+			840 & 0.021679 & 0.025272 & 0.014393 & 0.027439 \\
+			890 & 0.031804 & 0.036744 & 0.018268 & 0.019874 \\
+			940 & 0.031822 & 0.041339 & 0.015764 & 0.019804 \\
+			990 & 0.029140 & 0.031967 & 0.017707 & 0.022953 \\
+			1040 & 0.018126 & 0.017158 & 0.020562 & 0.019851 \\
+			1090 & 0.020400 & 0.034177 & 0.020802 & 0.022682 \\
+			1140 & 0.017278 & 0.020187 & 0.020381 & 0.020917 \\
+			1190 & 0.019533 & 0.018339 & 0.021634 & 0.027210 \\
+			\bottomrule
+		\end{tabular}
+	\caption{Errors for incrementally selecting 50 additional data points.}
+\end{table*}
+	
+Ultimately active learning failed to perform significantly better than selecting data points at random. While the final performance for 1,190 data points selected by actively learning was slightly better than with random selection, the difference was minute, and random selection overall performed better throughout each increment. The results are summarized in Table 2.
+
+\section{Conclusion}
+The final evaluation of the classifier was done using 1,190 data points labeled with active learning. 256 features were selected using the RELIEF algorithm, and then 10 separate classifiers were trained using 90\% of the data selected at random and $\alpha=0.8$ for the smoothing parameter. The training and test errors for each individual trial were averaged to achieve a final measure of performance. The results of these trials and their average are detailed in Table 3.
+
+\begin{table*}\centering
+	\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{@{}m{2cm}m{4cm}m{4cm}@{}}
+			\toprule
+			\textbf{Trial} & \textbf{Training Error} & \textbf{Test Error} \\
+			\midrule
+			1 & 0.022514 & 0.016000 \\
+			2 & 0.018674 & 0.016667 \\
+			3 & 0.020599 & 0.040650 \\
+			4 & 0.024186 & 0.008621 \\
+			5 & 0.021435 & 0.008475 \\
+			6 & 0.018587 & 0.034783 \\
+			7 & 0.019645 & 0.040984 \\
+			8 & 0.018519 & 0.036036 \\
+			9 & 0.024007 & 0.009259 \\
+			10 & 0.023386 & 0.016393 \\
+			\textbf{Average} & \textbf{0.021155} & \textbf{0.022787} \\
+			\bottomrule
+		\end{tabular}
+	\caption{Errors for final classifier trials.}
+\end{table*}
+
+Overall, the classifier performed well, achieving on average slightly better than 97\% accuracy for both training and test data. It did especially well in terms of false positives, rarely labeling regions which had not been raided as if they had been. It also performed very well on regions which had been raided by very prolific raider groups for which numerous examples were available in the training data.
+
+Where the classifier appears to have fallen short is primarily with regions raided by very infrequent raiders. For these groups relatively few data points were available, and the classifier failed to generalize what few it had to the handful of other instances. Only a very small amount of labeled data was used in training and testing the final set of classifiers, so it is also uncertain whether the performance of these classifiers would scale to larger sets of data trained as is.
+
+\end{document}

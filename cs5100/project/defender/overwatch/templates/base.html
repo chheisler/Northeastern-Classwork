@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}{{ Overwatch }}{% endblock %}</title>
+		{% load staticfiles %}
+		<link rel="shortcut icon" href="{% static 'overwatch/favicon.ico' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'overwatch/style.css' %}" />
+		<script src="{% static 'jquery/jquery-1.11.3.min.js' %}"></script>
+		<script src="{% static 'civics/script.js' %}"></script>
+		{% block scripts %}{% endblock %}
+	</head>
+
+	<body>
+		<div id="container">
+			{% if messages %}
+				<ul class="messages">
+					{% for message in messages %}
+						<li{% if message.tags %} class="message {{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+			{% block content %}{% endblock %}
+		</div>
+	</body>
+</html>

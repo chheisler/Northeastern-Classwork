@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+	<script src="{% static 'overwatch/label.js' %}"></script>
+	<script>next_url = "{{ next_url }}";</script>
+{% endblock %}
+{% block title %}Label Data - Overwatch{% endblock %}
+{% block content %}
+	{% csrf_token %}
+	<div id="id" style="display:none;">{{ id }}</div>
+	<pre id="factbook">{{ factbook }}</pre>
+	<p id="tags">{{ tags }}</p>
+	<p id="embassies">{{ embassies }}</p>
+	<button id="yes">Yes</button>
+	<button id="no">No</button>
+{% endblock %}
