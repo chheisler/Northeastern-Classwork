@@ -1,0 +1,224 @@
+\documentclass[12pt]{article}
+\title{Homework 1}
+\author{Charles Heisler -- CS6220 -- 10/17/2016}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\begin{document}
+	\maketitle
+
+	\section*{1. Decision Tree}
+	\subsection*{Unpruned tree.}
+	\begin{itemize}
+		\item[] \textbf{Top:} 7, 4, 0.946, Split=Education, Gain=0.150
+		\begin{itemize}
+			\item[] \textbf{High School:} 5, 1 , 0.650, Split=Experience, Gain=0.317
+			\begin{itemize}
+				\item[] \textbf{$\leq$ 10:} 4, 0, 0, Salary=Low
+				\item[] \textbf{$>$ 10:} 1, 1, 1, Split=Career, Gain=1
+				\begin{itemize}
+					\item[] \textbf{Management:} 0, 1, 0, Salary=High
+					\item[] \textbf{Service:} 1, 0, 0, Salary=Low
+				\end{itemize}
+			\end{itemize}
+			\item[] \textbf{College:} 2, 3, 0.971, Split=Location, Gain=0.971
+			\begin{itemize}
+				\item[] \textbf{California:}  0, 3, 0, Salary=High
+				\item[] \textbf{Oregon:} 2, 0, 0, Salary=Low
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	
+	\subsection*{Unpruned validation.}
+	\begin{tabular}{c | c | c | c}
+		Instance & Salary & Path & Predicted \\
+		\hline & & & \\
+		1 & Low & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{Oregon}$ & Low \\
+		2 & Low & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{Oregon}$ & Low \\
+		3 & High & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{California}$ & High \\
+		4 & High & $\textrm{Top}\rightarrow\textrm{High School}\rightarrow>10\rightarrow\textrm{Service}$ & Low \\
+		5 & High & $\textrm{Top}\rightarrow\textrm{High School}\rightarrow>10\rightarrow\textrm{Management}$ & High
+	\end{tabular}
+	
+	\subsection*{Pruned tree.}
+	\begin{itemize}
+		\item[] \textbf{Top:} 7, 4, 0.946, Split=Education, Gain=0.150
+		\begin{itemize}
+			\item[] \textbf{High School:} 5, 1 , 0.650, Split=Experience, Gain=0.317
+			\begin{itemize}
+				\item[] \textbf{$\leq$ 10:} 4, 0, 0, Salary=Low
+				\item[] \textbf{$>$ 10:} 1, 1, 1, Salary=High
+			\end{itemize}
+			\item[] \textbf{College:} 2, 3, 0.971, Split=Location, Gain=0.971
+			\begin{itemize}
+				\item[] \textbf{California:}  0, 3, 0, Salary=High
+				\item[] \textbf{Oregon:} 2, 0, 0, Salary=Low
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	
+	\subsection*{Pruned validation.}
+	\begin{tabular}{c | c | c | c}
+		Instance & Salary & Path & Predicted \\
+		\hline & & & \\
+		1 & Low & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{Oregon}$ & Low \\
+		2 & Low & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{Oregon}$ & Low \\
+		3 & High & $\textrm{Top}\rightarrow\textrm{College}\rightarrow\textrm{California}$ & High \\
+		4 & High & $\textrm{Top}\rightarrow\textrm{High School}\rightarrow>10$ & High \\
+		5 & High & $\textrm{Top}\rightarrow\textrm{High School}\rightarrow>10$ & High
+	\end{tabular}
+	
+	\section*{2. K-Nearest-Neighbors}
+	\subsection*{(a)}
+	\begin{tabular}{c | c}
+		$k$ & Accuracy \\
+		\hline & \\
+		1 & 0.752 \\
+		5 & 0.755 \\
+		11 & 0.765 \\
+		21 & 0.747 \\
+		41 & 0.752 \\
+		61 & 0.738 \\
+		81 & 0.727 \\
+		101 & 0.729 \\
+		201 & 0.731 \\
+		401 & 0.720 \\
+	\end{tabular}
+
+	\subsection*{(b)}
+	\begin{tabular}{c | c}
+		$k$ & Accuracy \\
+		\hline & \\
+		1 & 0.823 \\
+		5 & 0.832 \\
+		11 & 0.875 \\
+		21 & 0.871 \\
+		41 & 0.870 \\
+		61 & 0.870 \\
+		81 & 0.870 \\
+		101 & 0.864 \\
+		201 & 0.846 \\
+		401 & 0.814
+	\end{tabular}
+
+	\subsection*{(c)}
+	\begin{tabular}{c | c | c | c | c | c | c | c | c | c | c}
+		$t$ & $k=1$ & $k=5$ & $k=11$ & $k=21$ & $k=41$ & $k=61$ & $k=81$ & $k=101$ & $k=201$ & $k=401$ \\
+		\hline & & & & & & & & & & \\
+		1  & yes & yes & yes & yes & yes & no  & no  & no  & no  & no  \\
+		2  & yes & yes & yes & yes & yes & yes & yes & no  & no  & no  \\
+		3  & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		4  & yes & yes & yes & yes & no  & no  & yes & yes & yes & yes \\
+		5  & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		6  & yes & yes & yes & no  & no  & yes & yes & yes & yes & yes \\
+		7  & yes & no  & no  & no  & no  & no  & no  & no  & no  & no  \\	
+		8  & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		9  & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		10 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		11 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		12 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		13 & yes & yes & yes & yes & yes & yes & no  & no  & no  & no  \\
+		14 & no  & yes & yes & yes & no  & no  & no  & no  & no  & no  \\
+		15 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		16 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		17 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		18 & yes & yes & yes & yes & yes & yes & yes & no  & no  & no  \\
+		19 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		20 & no  & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		21 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		22 & yes & yes & yes & yes & yes & yes & no  & no  & no  & no  \\
+		23 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		24 & no  & no  & yes & yes & yes & yes & yes & yes & yes & yes \\
+		25 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		26 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		27 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		28 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		29 & yes & yes & yes & no  & yes & yes & yes & yes & no  & no  \\
+		30 & yes & yes & yes & yes & no  & no  & no  & no  & no  & no  \\
+		31 & yes & no  & no  & no  & no  & no  & no  & no  & no  & no  \\
+		32 & yes & yes & yes & yes & yes & yes & yes & yes & no  & no  \\
+		33 & yes & yes & yes & yes & no  & no  & no  & no  & no  & no  \\
+		34 & yes & yes & no  & no  & no  & no  & no  & no  & no  & no  \\
+		35 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		36 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		37 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		38 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		39 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		40 & no  & no  & no  & no  & no  & no  & no  & no  & no  & no  \\
+	\end{tabular}
+
+	\begin{tabular}{c | c | c | c | c | c | c | c | c | c | c}
+		$t$ & $k=1$ & $k=5$ & $k=11$ & $k=21$ & $k=41$ & $k=61$ & $k=81$ & $k=101$ & $k=201$ & $k=401$ \\
+		\hline & & & & & & & & & & \\
+		41 & no  & no  & no  & no  & no  & no  & no  & no  & no  & no  \\
+		32 & yes & yes & yes & yes & yes & yes & yes & yes & no  & no  \\
+		43 & no  & no  & no  & no  & no  & no  & no  & no  & no  & no  \\
+		44 & no  & no  & no  & no  & no  & no  & no  & no  & no  & no  \\
+		45 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		46 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		47 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		48 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		49 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+		50 & yes & yes & yes & yes & yes & yes & yes & yes & yes & yes \\
+	\end{tabular}
+
+	\subsection*{(d)}
+	Based on the results of (a) and (b) it can be concluded that KNN is most effective when the data is first normalized. Accuracy also seems to at first rise as $k$ increases before starting to fall again. Based on this, one method for selecting an optimal value for $k$ would be to test higher and higher values for $k$ until a decrease in accuracy appears.
+	\section*{3. SVM Using Weka}
+	\begin{tabular}{c | c | c | c}
+		Kernel & Parameters & Correct & Incorrect \\
+		\hline & & & \\
+		Poly & $p=1$ & 717 & 129 \\
+		Poly & $p=2$ & 810 & 36 \\
+		Poly & $p=5$ & 785 & 61 \\
+		Poly & $p=10$ & 678 & 168 \\
+		RBF & $\gamma=0.1$ & 670 & 176 \\
+		RBF & $\gamma=1$ & 764 & 82 \\
+		RBF & $\gamma=10$ & 453 & 393
+	\end{tabular} \\
+	
+	 Kernel parameters which are both too low and both too high negatively impact accuracy. The former is likely because a lower value for the parameter projects the data into too few dimensions, and it is consequently still not linearly separable. The latter is likely because projecting into too high of a dimensional space introduces numerous superfluous dimensions with little relation  to the original data which hinder the trained learner from generalizing well.
+
+	\section*{4. Kernels}
+	Yes, $K\left(\cdot,\cdot\right)$ is a kernel which satisfies the property $K\left(x,y\right)=\phi\left(x\right)^\textrm{T}\phi\left(y\right)$. If $\phi\left(z\right)=\left[z_1,\sqrt{2}z_1^2z_2,\sqrt{7}x_3^3\right]$ then
+	\begin{align}
+		K\left(x,y\right) &= x_1 y_1 + 2x_1^2 y_1^2 x_2 y_2 + 7x_3^3 y_3^3 \\
+		&= \left[x_1, \sqrt{2}x_1^2x_2, \sqrt{7}x_3^3\right]^\textrm{T}\left[y_1, \sqrt{2}y_1^2y_2, \sqrt{7}y_3^3\right] \\
+		&= \phi\left(x\right)^\textrm{T}\phi\left(y\right)
+	\end{align}
+
+	\section*{5. Dual Form}
+	\subsection*{(a)}
+	\begin{align}
+		w &= \sum_i\alpha_ix_iy_i \\
+		&= 2 \cdot \left[1,0,1\right] \cdot 1 + 4 \cdot \left[1,1,1\right] \cdot -1 + 0 \cdot \left[1,0,0\right] \cdot 1 + 2 \cdot \left[1,1,0\right] \cdot 1 \\
+		&= \left[2,0,2\right] - \left[4,4,4\right] + \left[0,0,0\right] + \left[2,2,0\right] \\
+		&=\mathbf{\left[0,-2,-2\right]}
+	\end{align}
+	
+	\subsection*{(b)}	
+	\begin{align}
+		y_1\left(w^\textrm{T}x_1+b\right) &= 1 \\
+		1 \cdot \left(\left[0,-2,-2\right]^\textrm{T}\left[1,0,1\right] + b\right) &= 1 \\
+		b - 2 &= 1 \\
+		b = 3
+	\end{align}
+
+	\subsubsection*{primal.}
+	\begin{align}
+		\hat{y} &= \textrm{sign}\left(w^\textrm{T}z+b\right) \\
+				&= \textrm{sign}\left(\left[0,-2,-2\right]^\textrm{T}\left[1,1,0.8\right]+3\right) \\
+				&= \textrm{sign}\left(-0.6\right) \\
+				&= \mathbf{-1}
+	\end{align}
+
+	\subsubsection*{dual.}
+	\begin{align}
+		\hat{y} &= \textrm{sign}\left(\left(\sum_i \alpha_i y_i x_i^\textrm{T}z \right) + b\right) \\
+		&= \textrm{sign}\left(\left(\sum_i \alpha_i y_i x_i \right)^\textrm{T}z+b\right) \\
+		&= \textrm{sign}\left(\left(\left[2,0,2\right]-\left[4,4,4\right]+\left[0,0,0\right]+\left[2,2,0\right]\right)^\textrm{T}\left[1,1,0.8\right]+3\right) \\
+		&= \textrm{sign}\left(-0.6\right) \\
+		&= \mathbf{-1}
+	\end{align}
+\end{document}

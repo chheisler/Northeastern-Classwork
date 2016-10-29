@@ -1,0 +1,5 @@
+1. Place the data files 'spam_train.csv' and 'spam_test.csv' into the unpacked directory.
+2. Run 'python q2.py' to run the code for the second problem.
+
+The file 'q1.py' is not runnable but contains functions which were used to
+calculate entropy and gain for the first problem.

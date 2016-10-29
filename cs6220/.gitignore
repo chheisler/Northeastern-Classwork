@@ -1,0 +1,11 @@
+*.arff
+*.aux
+*.csv
+*.log
+*.odt
+*.pdf
+*.png
+*.pyc
+*.swp
+weka*/
+*.zip

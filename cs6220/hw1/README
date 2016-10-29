@@ -1,0 +1,6 @@
+1. Place the data file 'HW1_data.zip' into the unpacked directory.
+2. Run 'python setup.py' to create additional data sets and folders for logs and plots.
+3. Run 'python q1.py' to run the code for the first problem.
+4. Run 'python q2.py' to run the code for the second problem.
+5. Run 'python q3.py' to run the code for the third problem.
+6. If necessary, run 'python setup --clean' to remove the new data sets, logs and plots.
