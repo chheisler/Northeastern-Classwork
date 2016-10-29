@@ -1,0 +1,59 @@
+2016-09-25T01:30:00.754Z INFO Ensure step 6 jar file s3://cheisler.cs6240/WordCount.jar
+2016-09-25T01:30:00.861Z INFO StepRunner: Created Runner for step 6
+INFO startExec 'hadoop jar /mnt/var/lib/hadoop/steps/s-279OHP67JV3FT/WordCount.jar WordCount s3://cheisler.cs6240/hw1.txt s3://cheisler.cs6240/output'
+INFO Environment:
+  PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/opt/aws/bin
+  LESS_TERMCAP_md=[01;38;5;208m
+  LESS_TERMCAP_me=[0m
+  HISTCONTROL=ignoredups
+  LESS_TERMCAP_mb=[01;31m
+  AWS_AUTO_SCALING_HOME=/opt/aws/apitools/as
+  UPSTART_JOB=rc
+  LESS_TERMCAP_se=[0m
+  HISTSIZE=1000
+  HADOOP_ROOT_LOGGER=INFO,DRFA
+  JAVA_HOME=/etc/alternatives/jre
+  AWS_DEFAULT_REGION=us-west-2
+  AWS_ELB_HOME=/opt/aws/apitools/elb
+  LESS_TERMCAP_us=[04;38;5;111m
+  EC2_HOME=/opt/aws/apitools/ec2
+  TERM=linux
+  XFILESEARCHPATH=/usr/dt/app-defaults/%L/Dt
+  runlevel=3
+  LANG=en_US.UTF-8
+  AWS_CLOUDWATCH_HOME=/opt/aws/apitools/mon
+  MAIL=/var/spool/mail/hadoop
+  LESS_TERMCAP_ue=[0m
+  LOGNAME=hadoop
+  PWD=/
+  LANGSH_SOURCED=1
+  HADOOP_CLIENT_OPTS=-Djava.io.tmpdir=/mnt/var/lib/hadoop/steps/s-279OHP67JV3FT/tmp
+  _=/etc/alternatives/jre/bin/java
+  CONSOLETYPE=serial
+  RUNLEVEL=3
+  LESSOPEN=||/usr/bin/lesspipe.sh %s
+  previous=N
+  UPSTART_EVENTS=runlevel
+  AWS_PATH=/opt/aws
+  USER=hadoop
+  UPSTART_INSTANCE=
+  PREVLEVEL=N
+  HADOOP_LOGFILE=syslog
+  HOSTNAME=ip-172-31-25-46
+  NLSPATH=/usr/dt/lib/nls/msg/%L/%N.cat
+  HADOOP_LOG_DIR=/mnt/var/log/hadoop/steps/s-279OHP67JV3FT
+  EC2_AMITOOL_HOME=/opt/aws/amitools/ec2
+  SHLVL=5
+  HOME=/home/hadoop
+  HADOOP_IDENT_STRING=hadoop
+INFO redirectOutput to /mnt/var/log/hadoop/steps/s-279OHP67JV3FT/stdout
+INFO redirectError to /mnt/var/log/hadoop/steps/s-279OHP67JV3FT/stderr
+INFO Working dir /mnt/var/lib/hadoop/steps/s-279OHP67JV3FT
+INFO ProcessRunner started child process 19424 :
+hadoop   19424  2515  0 01:30 ?        00:00:00 bash /usr/lib/hadoop/bin/hadoop jar /mnt/var/lib/hadoop/steps/s-279OHP67JV3FT/WordCount.jar WordCount s3://cheisler.cs6240/hw1.txt s3://cheisler.cs6240/output
+2016-09-25T01:30:04.868Z INFO HadoopJarStepRunner.Runner: startRun() called for s-279OHP67JV3FT Child Pid: 19424
+INFO Synchronously wait child process to complete : hadoop jar /mnt/var/lib/hadoop/steps/s-279OHP67...
+INFO waitProcessCompletion ended with exit code 0 : hadoop jar /mnt/var/lib/hadoop/steps/s-279OHP67...
+INFO total process run time: 178 seconds
+2016-09-25T01:33:00.961Z INFO Step created jobs: job_1474759564353_0003
+2016-09-25T01:33:00.961Z INFO Step succeeded with exitCode 0 and took 178 seconds

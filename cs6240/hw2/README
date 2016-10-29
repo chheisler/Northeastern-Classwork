@@ -1,0 +1,8 @@
+Code for question 1, part (a) can be found in NoCombiner/.
+Code for question 1, part (b) can be found in Combiner/.
+Code for question 1, part (c) can be found in InMapperCombiner/.
+Code for question 2 can be found in TimeSeries/.
+
+Code can be built and run with 'make run'. Each makefile defines the variables
+INPUT, OUTPUT and NUM_REDUCERS which are passed as arguments to the run and
+can be altered if necessary.
