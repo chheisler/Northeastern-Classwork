@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+\title{Homework 3}
+\author{Charles Heisler -- CS6140 -- 10/20/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{pbox}
+\usepackage{graphicx}
+\usepackage{xfrac}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+See \texttt{gda.py}. Gaussian discriminant analysis produces error rates between 9\% and 10\%, so the Gaussian assumption seems to hold for the data set.
+
+\section*{Problem 2}
+	\subsection*{Step 1}
+	See \texttt{bayes.py}.
+	
+	\subsection*{Step 2}
+		\subsubsection*{1.}
+		\renewcommand{\arraystretch}{2.5}
+		
+		\textbf{Bernoulli} \\
+		\begin{tabular}{ r|c|c|c|c|c| } \multicolumn{1}{r}{}
+& \multicolumn{1}{c}{false positive rate}
+& \multicolumn{1}{c}{false negative rate}
+& \multicolumn{1}{c}{error rate} \\
+\cline{2-4}
+fold 1 & \shortstack{train=0.032 \\ test=0.037}& \shortstack{train=0.065 \\ test=0.048}& \shortstack{train=0.097 \\ test=0.085} \\\cline{2-4}
+fold 2 & \shortstack{train=0.032 \\ test=0.039}& \shortstack{train=0.063 \\ test=0.065}& \shortstack{train=0.096 \\ test=0.104} \\\cline{2-4}
+fold 3 & \shortstack{train=0.032 \\ test=0.037}& \shortstack{train=0.063 \\ test=0.074}& \shortstack{train=0.095 \\ test=0.111} \\\cline{2-4}
+fold 4 & \shortstack{train=0.033 \\ test=0.024}& \shortstack{train=0.065 \\ test=0.054}& \shortstack{train=0.098 \\ test=0.078} \\\cline{2-4}
+fold 5 & \shortstack{train=0.033 \\ test=0.039}& \shortstack{train=0.063 \\ test=0.080}& \shortstack{train=0.095 \\ test=0.120} \\\cline{2-4}
+fold 6 & \shortstack{train=0.034 \\ test=0.024}& \shortstack{train=0.064 \\ test=0.063}& \shortstack{train=0.098 \\ test=0.087} \\\cline{2-4}
+fold 7 & \shortstack{train=0.034 \\ test=0.026}& \shortstack{train=0.063 \\ test=0.076}& \shortstack{train=0.097 \\ test=0.102} \\\cline{2-4}
+fold 8 & \shortstack{train=0.032 \\ test=0.033}& \shortstack{train=0.067 \\ test=0.052}& \shortstack{train=0.099 \\ test=0.085} \\\cline{2-4}
+fold 9 & \shortstack{train=0.032 \\ test=0.035}& \shortstack{train=0.064 \\ test=0.063}& \shortstack{train=0.097 \\ test=0.098} \\\cline{2-4}
+fold 10 & \shortstack{train=0.033 \\ test=0.033}& \shortstack{train=0.064 \\ test=0.067}& \shortstack{train=0.097 \\ test=0.100} \\\cline{2-4}
+average & \shortstack{train=0.033 \\ test=0.033}& \shortstack{train=0.064 \\ test=0.064}& \shortstack{train=0.097 \\ test=0.097} \\\cline{2-4}
+\end{tabular}
+
+\clearpage
+\textbf{Gaussian} \\
+\begin{tabular}{ r|c|c|c|c|c| } \multicolumn{1}{r}{}
+& \multicolumn{1}{c}{false positive rate}
+& \multicolumn{1}{c}{false negative rate}
+& \multicolumn{1}{c}{error rate} \\
+\cline{2-4}
+fold 1 & \shortstack{train=0.038 \\ test=0.037}& \shortstack{train=0.078 \\ test=0.070}& \shortstack{train=0.116 \\ test=0.107} \\\cline{2-4}
+fold 2 & \shortstack{train=0.037 \\ test=0.030}& \shortstack{train=0.079 \\ test=0.067}& \shortstack{train=0.116 \\ test=0.098} \\\cline{2-4}
+fold 3 & \shortstack{train=0.035 \\ test=0.048}& \shortstack{train=0.077 \\ test=0.072}& \shortstack{train=0.112 \\ test=0.120} \\\cline{2-4}
+fold 4 & \shortstack{train=0.038 \\ test=0.037}& \shortstack{train=0.075 \\ test=0.076}& \shortstack{train=0.114 \\ test=0.113} \\\cline{2-4}
+fold 5 & \shortstack{train=0.037 \\ test=0.041}& \shortstack{train=0.078 \\ test=0.072}& \shortstack{train=0.116 \\ test=0.113} \\\cline{2-4}
+fold 6 & \shortstack{train=0.034 \\ test=0.059}& \shortstack{train=0.077 \\ test=0.087}& \shortstack{train=0.110 \\ test=0.146} \\\cline{2-4}
+fold 7 & \shortstack{train=0.038 \\ test=0.041}& \shortstack{train=0.072 \\ test=0.080}& \shortstack{train=0.110 \\ test=0.122} \\\cline{2-4}
+fold 8 & \shortstack{train=0.037 \\ test=0.030}& \shortstack{train=0.075 \\ test=0.085}& \shortstack{train=0.113 \\ test=0.115} \\\cline{2-4}
+fold 9 & \shortstack{train=0.036 \\ test=0.020}& \shortstack{train=0.080 \\ test=0.087}& \shortstack{train=0.117 \\ test=0.107} \\\cline{2-4}
+fold 10 & \shortstack{train=0.036 \\ test=0.035}& \shortstack{train=0.074 \\ test=0.076}& \shortstack{train=0.110 \\ test=0.111} \\\cline{2-4}
+average & \shortstack{train=0.037 \\ test=0.038}& \shortstack{train=0.077 \\ test=0.077}& \shortstack{train=0.113 \\ test=0.115} \\\cline{2-4}
+\end{tabular}
+
+\clearpage
+\textbf{Four bin} \\
+\begin{tabular}{ r|c|c|c|c|c| } \multicolumn{1}{r}{}
+& \multicolumn{1}{c}{false positive rate}
+& \multicolumn{1}{c}{false negative rate}
+& \multicolumn{1}{c}{error rate} \\
+\cline{2-4}
+fold 1 & \shortstack{train=0.031 \\ test=0.017}& \shortstack{train=0.068 \\ test=0.043}& \shortstack{train=0.099 \\ test=0.061} \\\cline{2-4}
+fold 2 & \shortstack{train=0.031 \\ test=0.026}& \shortstack{train=0.066 \\ test=0.052}& \shortstack{train=0.097 \\ test=0.078} \\\cline{2-4}
+fold 3 & \shortstack{train=0.032 \\ test=0.017}& \shortstack{train=0.065 \\ test=0.074}& \shortstack{train=0.097 \\ test=0.091} \\\cline{2-4}
+fold 4 & \shortstack{train=0.031 \\ test=0.037}& \shortstack{train=0.064 \\ test=0.067}& \shortstack{train=0.096 \\ test=0.104} \\\cline{2-4}
+fold 5 & \shortstack{train=0.030 \\ test=0.039}& \shortstack{train=0.064 \\ test=0.078}& \shortstack{train=0.095 \\ test=0.117} \\\cline{2-4}
+fold 6 & \shortstack{train=0.030 \\ test=0.035}& \shortstack{train=0.064 \\ test=0.078}& \shortstack{train=0.094 \\ test=0.113} \\\cline{2-4}
+fold 7 & \shortstack{train=0.033 \\ test=0.026}& \shortstack{train=0.066 \\ test=0.078}& \shortstack{train=0.099 \\ test=0.104} \\\cline{2-4}
+fold 8 & \shortstack{train=0.030 \\ test=0.030}& \shortstack{train=0.065 \\ test=0.072}& \shortstack{train=0.096 \\ test=0.102} \\\cline{2-4}
+fold 9 & \shortstack{train=0.030 \\ test=0.048}& \shortstack{train=0.067 \\ test=0.059}& \shortstack{train=0.097 \\ test=0.107} \\\cline{2-4}
+fold 10 & \shortstack{train=0.031 \\ test=0.037}& \shortstack{train=0.066 \\ test=0.059}& \shortstack{train=0.097 \\ test=0.096} \\\cline{2-4}
+average & \shortstack{train=0.031 \\ test=0.031}& \shortstack{train=0.066 \\ test=0.066}& \shortstack{train=0.097 \\ test=0.097} \\\cline{2-4}
+\end{tabular}
+
+\clearpage
+\textbf{Nine bin} \\
+\begin{tabular}{ r|c|c|c|c|c| } \multicolumn{1}{r}{}
+& \multicolumn{1}{c}{false positive rate}
+& \multicolumn{1}{c}{false negative rate}
+& \multicolumn{1}{c}{error rate} \\
+\cline{2-4}
+fold 1 & \shortstack{train=0.043 \\ test=0.043}& \shortstack{train=0.067 \\ test=0.070}& \shortstack{train=0.110 \\ test=0.113} \\\cline{2-4}
+fold 2 & \shortstack{train=0.043 \\ test=0.041}& \shortstack{train=0.069 \\ test=0.076}& \shortstack{train=0.112 \\ test=0.117} \\\cline{2-4}
+fold 3 & \shortstack{train=0.045 \\ test=0.033}& \shortstack{train=0.068 \\ test=0.072}& \shortstack{train=0.113 \\ test=0.104} \\\cline{2-4}
+fold 4 & \shortstack{train=0.042 \\ test=0.039}& \shortstack{train=0.068 \\ test=0.067}& \shortstack{train=0.110 \\ test=0.107} \\\cline{2-4}
+fold 5 & \shortstack{train=0.042 \\ test=0.059}& \shortstack{train=0.069 \\ test=0.065}& \shortstack{train=0.111 \\ test=0.124} \\\cline{2-4}
+fold 6 & \shortstack{train=0.042 \\ test=0.041}& \shortstack{train=0.067 \\ test=0.072}& \shortstack{train=0.109 \\ test=0.113} \\\cline{2-4}
+fold 7 & \shortstack{train=0.042 \\ test=0.057}& \shortstack{train=0.066 \\ test=0.076}& \shortstack{train=0.109 \\ test=0.133} \\\cline{2-4}
+fold 8 & \shortstack{train=0.041 \\ test=0.050}& \shortstack{train=0.070 \\ test=0.052}& \shortstack{train=0.110 \\ test=0.102} \\\cline{2-4}
+fold 9 & \shortstack{train=0.041 \\ test=0.043}& \shortstack{train=0.068 \\ test=0.050}& \shortstack{train=0.109 \\ test=0.093} \\\cline{2-4}
+fold 10 & \shortstack{train=0.043 \\ test=0.035}& \shortstack{train=0.064 \\ test=0.102}& \shortstack{train=0.108 \\ test=0.137} \\\cline{2-4}
+average & \shortstack{train=0.042 \\ test=0.044}& \shortstack{train=0.068 \\ test=0.070}& \shortstack{train=0.110 \\ test=0.114} \\\cline{2-4}
+\end{tabular}
+
+		\renewcommand{\arraystretch}{1}
+		
+		\subsubsection*{2.}
+		\includegraphics[scale=0.8]{roc.png}
+		
+		\subsubsection*{3.}
+		Bernoulli AUC: 0.965720 \\
+		Gaussian AUC: 0.944333 \\
+		Four bin AUC: 0.968771 \\
+		Nine bin AUC: 0.951258\\
+		
+\section*{Problem 3}
+See \texttt{emgm.m.pdf}.
+
+\section*{Problem 4}
+See \texttt{em.py}.
+
+\section*{Problem 5}
+	\subsection*{a)}
+	\begin{align}
+	P\left(A \vert B,C\right) &= \frac{P\left(B,C \vert A\right) P\left(A\right)}{P\left(B,C\right)} \\[1em]
+	&= \frac{P\left(B,C \vert A\right)P\left(A\right)}{P\left(C\right)P\left(B \vert C\right)} \\[1em]
+	&= \frac{\frac{P\left(A,B,C\right)}{P\left(A\right)}P\left(A\right)}{P\left(C\right)P\left(B \vert C\right)} \\[1em]
+	&= \frac{P\left(A,B,C\right)}{P\left(C\right)P\left(B \vert C\right)} \\[1em]
+	&= \frac{P\left(A,C\right)P\left(B \vert A,C\right)}{P\left(C\right)P\left(B \vert C\right)} \\[1em]
+	&= \frac{P\left(B \vert A,C\right)P\left(A \vert C\right)}{P\left(B \vert C\right)}
+	\end{align}
+	
+	\subsection*{b)}
+	Let $D$ be the probability that the coin is double-headed, $\bar{D}$ be the probability that the coin is fair and $H^N$ be the probability of getting $N$ heads in a row. The probability that the coin is double-headed after $N$ heads in a row is:
+	
+	\begin{align}
+		P\left(D \vert H^N\right) &= \frac{P\left(D,H^N\right)}{P\left(H^N\right)} \\[0.5em]
+		&= \frac{P\left(D\right)P\left(H^N \vert D\right)}{P\left(H^N \vert D\right)P\left(D\right) + P\left(H^N \vert \bar{D}\right)P\left(\bar{D}\right)} \\[0.5em]
+		&= \frac{\frac{1}{F + 1}}{\frac{1}{F+1} + \frac{1}{2^N}\frac{F}{F+1}} \\[0.5em]
+		&= \frac{\frac{1}{F+1}}{\frac{2^N + F}{2^N\left(F+1\right)}} \\[0.5em]
+		&= \frac{2^N}{2^N + F}
+	\end{align}
+	
+	Solving for $N$ in terms of $F$ when $P\left(D \vert H^N\right) = \sfrac{1}{2}$ we get
+	
+	\begin{align}
+		\frac{2^N}{2^N + F} &= \frac{1}{2} \\[0.5em]
+		2^N &= 2^{N-1}+\frac{F}{2} \\[0.5em]
+		2^{N-1} &= \frac{F}{2} \\[0.5em]
+		2^N &= F \\[0.5em]
+		N &= \log_2 F
+	\end{align}
+	
+	Rounding this value to the next whole number of flips will give the number of heads in a row after which there will be a better than even chance that the coin is double-headed, so the final formula as a function of F will be
+	
+	$$N(F)=\left\lfloor{\log_2F+1}\right\rfloor$$
+\end{document}

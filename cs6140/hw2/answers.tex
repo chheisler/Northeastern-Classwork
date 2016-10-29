@@ -1,0 +1,166 @@
+\documentclass[12pt]{article}
+\title{Homework 2}
+\author{Charles Heisler -- CS6140 -- 10/6/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{pbox}
+\usepackage{graphicx}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+
+\subsection*{(a)}
+See \texttt{regress.py}, \texttt{housing.py} and \texttt{spambase.py}.
+
+\subsection*{(b)}
+See \texttt{regress.py}, \texttt{housing.py} and \texttt{spambase.py}.
+
+\subsection*{(c)}
+
+\subsubsection*{Errors and accuracies}
+\renewcommand{\arraystretch}{3}
+\begin{tabular}{ r|c|c|c|c|c| }
+\multicolumn{1}{r}{}
+ & \multicolumn{1}{c}{\shortstack{decision \\ tree}}
+ & \multicolumn{1}{c}{\shortstack{linear \\ regression \\ (normal \\ equations)}}
+ & \multicolumn{1}{c}{\shortstack{ridge \\ regression \\ (normal \\ equations)}}
+ & \multicolumn{1}{c}{\shortstack{linear \\ regression \\ (gradient \\ descent)}}
+ & \multicolumn{1}{c}{\shortstack{logistic \\ regression \\ (gradient \\ ascent)}}\\
+\cline{2-6}
+housing & \shortstack{train=26.497 \\ test=24.282}
+& \shortstack{train=22.081 \\ test=22.638}
+& \shortstack{train=23.685 \\ test=19.714}
+& \shortstack{train=23.056 \\ test=20.913}
+& N/A\\
+\cline{2-6}
+spambase & \shortstack{train=0.918 \\ test=0.907}
+& \shortstack{train=0.890 \\ test=0.886}
+& \shortstack{train=0.888 \\ test=0.886}
+& \shortstack{train=0.884 \\ test=0.881}
+& \shortstack{train=0.911 \\ test=0.908} \\
+\cline{2-6}
+\end{tabular}
+\renewcommand{\arraystretch}{1}
+
+Logistic regression is not possible for the housing data set because it is continuous rather than discrete values.
+
+\subsubsection*{Classification tree confusion matrix}
+\begin{tabular}{ r|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{predicted=0}
+ & \multicolumn{1}{c}{predicted=1} \\
+\cline{2-3}
+true=0 & 265 & 6 \\
+\cline{2-3}
+true=1 & 25 & 164 \\
+\cline{2-3}
+\end{tabular}
+
+\subsubsection*{Linear regression confusion matrix}
+\begin{tabular}{ r|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{predicted=0}
+ & \multicolumn{1}{c}{predicted=1} \\
+\cline{2-3}
+true=0 & 265 & 6 \\
+\cline{2-3}
+true=1 & 47 & 142 \\
+\cline{2-3}
+\end{tabular}
+
+\subsubsection*{Logistic regression confusion matrix}
+\begin{tabular}{ r|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{predicted=0}
+ & \multicolumn{1}{c}{predicted=1} \\
+\cline{2-3}
+true=0 & 267 & 4 \\
+\cline{2-3}
+true=1 & 29 & 160 \\
+\cline{2-3}
+\end{tabular}
+
+\subsection*{(d)}
+\includegraphics[scale=0.75]{roc.png}
+\\ Linear AUC: 0.936913
+\\ Logistic AUC: 0.950661
+
+\section*{Problem 2}
+See \texttt{perceptron.py}.
+
+\section*{Problem 3}
+
+\subsection*{(a)}
+See \texttt{neural.py}.
+
+\subsection*{(b)}
+Each original data point required 8 values to encode. But once propagated to the hidden layer, each one only required 3 hidden values to encode with enough fidelity to then recover at the output layer. This was because, even though given 8 bits there were $2^8$ theoretical possible input values, only $8$ of them were used, requiring only $\log_28$ bits to distinguish among them. The purpose of the training algorithm then in this case, and other similar encoder-decoder cases, is to find a mapping to a more compact representation for a set of sparse data points, and to find a mapping from that compact representation back to the original one. This allows data which could in theory cover a larger range of values but in practice covers a much smaller one to be stored or transmitted at less expense.
+
+\subsection*{(c)}
+The output for each hidden unit is essentially is a binary bit, which outputs a value closer to $0$ or $1$ depending on which side of the sigmoid function its net value falls on. An encoder-decoder with $n$ hidden units could therefore reliably encode and decode $2^n$ values. Conversely, in order to encode $m$ different data points, $\lceil\log_2m\rceil$ hidden units will be necessary. This means that a network with $1$ or $2$ hidden units could encode $2$ or $4$ values respectively, but not the full $8$ in the problem.
+
+\section*{Problem 4}
+	For a given output $k$, $net_k$ will equal
+	
+	$$net_k=\sum_jw_{kj}f(net_j)$$
+
+	\noindent
+	for each hidden node $j$. If $f$ is a linear function, then
+	
+	$$f(net_j)=a_jnet_j+b_j$$
+	
+	\noindent
+	By definition
+	
+	$$net_j=\sum_iw_{ji}x_i$$
+	
+	\noindent
+	for each input node $i$. So the complete expanded formula for $net_k$ is then
+	
+	\begin{align}
+		net_k&=\sum_jw_{kj}\left(a_j\left(\sum_iw_{ji}x_i\right) + b_j\right) \\
+		&= \sum_j\left(\sum_iw_{kj}a_jw_{ji}x_i\right) + w_{kj}b_j \\
+		&= \sum_ix_i\sum_jw_{kj}a_jw_{ji} + \sum_jw_{kj}b_j
+	\end{align}
+	
+	\noindent
+	This formula gives a direct, two-level mapping between the input values and the output values. It can be explicitly rewritten as the sum of the weighted inputs and a bias
+	
+	$$net_k = w_0+\sum_iw_{ki}x_i$$
+
+	\noindent	
+	where
+	
+	$$w_{ki}=\sum_jw_{kj}a_jw_{ji}$$
+	
+	\noindent
+	and
+	
+	$$w_0 = \sum_jw_{kj}b_j$$
+	
+	This weighted sum of inputs without any hidden layer, if $net_k$ is fed into a sigmoid function, is equivalent to the perceptron algorithm. The perceptron algorithm can only reliably solve problems which are linearly separable, so it would not be able to solve a non-linearly separable problem like XOR, nor would its equivalent, three-level network with linear hidden functions.
+	
+\section*{Problem 5}
+
+\subsection*{ML practice advice}
+The advice begins with debugging machine learning algorithms. A number of common methods, such as trying to get more samples, changing the learning rate, changing the features, etc. are listed out. However, trying all of these at random to find the right ones to tweak is very time consuming and wasteful. Instead, it is better to use a diagnostic of some sort to try and locate what the problem is and what fix is appropriate. For example, a common diagnostic is comparing the training and test error rates to the ideal error rate. In practice though is if often necessary to come up with new diagnostics appropriate to the problem at hand. Diagnostics are also useful for understanding what the algorithm is doing, even in the absence of significant error.
+
+The next tool discussed is error analysis. Error analysis attempts to explain what causes the difference between the observed performance and the ideal performance. Similar is ablative analysis, which instead tries to explain the difference between the current performance and some baseline. Applications often contain multiple components. In these cases the analysis can be done by removing components one-by-one and seeing how this affects the performance.
+
+Finally, the advice covers approaches to getting started on a machine learning problem. One way is to very carefully gather the correct data, select the proper features and design the architecture of the algorithm. This will often give a more elegant and scalable algorithm but it is possible to fall into the trap of overthinking things and prematurely optimizing the algorithm. The other approach is to instead create a quick-and-dirty algorithm, and to then use testing and diagnostics to identify and fix errors. This approach has the advantage of finding a working solution to the problem at hand faster.
+
+\subsection*{A Few Useful Things to Know about Machine Learning}
+This piece's stated aim is to convey "folk knowledge" about machine learning that is useful but often absent from other sources. It begins by breaking the problem of learning a classifier into representation, evaluation and optimization. Choosing a representation for a classifier restricts the possible classifiers to a \textit{hypothesis space}. A learner also needs some sort of objective function to score its progress and a method for optimizing the performance of its objective function. The choices made for these three components will be indicative of which machine learning approach is appropriate.
+
+The next point is that generalization is what counts. It is trivial to learn a classifier which performs well on the training data. The goal is instead to learn a classifier which generalizes well. For this reason is it is necessary to put aside data for testing and to be careful about it contaminating the algorithm, such as by tweaking it based on results from the test data. This point is followed by the related point that data is not enough. In order to generalize well, assumptions or knowledge outside of the data must be encoded in the algorithm
+
+The article next discusses overfitting, which happens when an algorithm fails to generalize well. Overfitting can be understood in terms of \textit{bias}, the tendency to learn the wrong thing, and \textit{variance}, the tendency to learn randomly regardless of data. Because of overfitting, strong, false assumptions often perform better than weak, true assumptions, as the latter requires more data to avoid overfitting.
+
+Other common problems are discussed. One is that intuitions which work well in  2 or 3 dimensions break down at higher ones and algorithms which work well in low dimensions may become intractable in higher ones. Another is that theoretical guarantees about the performance of algorithms, given enough data, are not reliable. These bounds are very loose and really only say that, given a certain amount of data, it's highly probably that a classifier can be found, or that one does not exist.
+
+Next, features and data are discussed. Choosing what features to use carefully is often the difference between an effective and a poor learner. It is also often better to have more data than it is to have a more complex learner. In fact, more complex learners may be dispreferred because they take longer to process the data, and a simpler learner with more data will outperform it. It is also possible to combine multiple models to make decisions, rather than using just one, which can also boost performance. The article finishes with notes about how a more simple representation does not guarantee that a classifier can be learned and that, while machine learning algorithms find correlations, these correlations does not imply necessary causation.
+\end{document}

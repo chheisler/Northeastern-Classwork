@@ -1,0 +1,66 @@
+\documentclass[12pt]{article}
+\title{Homework 4}
+\author{Charles Heisler -- CS6140 -- 11/07/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{pbox}
+\usepackage{graphicx}
+\usepackage{xfrac}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+See \texttt{adaboost.py}.
+
+\textbf{Optimal} \\
+\includegraphics[scale=0.7]{optimal_round.png} \\
+\includegraphics[scale=0.7]{optimal_train_test.png} \\
+\includegraphics[scale=0.7]{optimal_auc.png} \\
+
+\clearpage
+\textbf{Random} \\
+\includegraphics[scale=0.7]{random_round.png} \\
+\includegraphics[scale=0.7]{random_train_test.png} \\
+\includegraphics[scale=0.7]{random_auc.png} \\
+
+\section*{Problem 2}
+See \texttt{uci.py}.
+
+\section*{Problem 3}
+See \texttt{al.py}.
+
+\section*{Problem 4}
+See \texttt{ecoc.py}.
+
+\section*{Problem 5}
+The VC dimension of unions of two rectangles is \textbf{8}. Consider a single rectangle. If the rectangle is axes-aligned and we need to capture 4 points with it, its dimensions will be determined by the distance along the $x$-axis between the two most distance points on this axis and the distance along the $y$-axis between the two most distance points on this axis.
+
+Now consider 5 points. If we draw a rectangle which includes the 2 most distance points on the $x$-axis and the 2 most distance points on the $y$-axis it will also have to include the last point. An axes-aligned rectangle therefore cannot capture all possible divisions of 5 points.
+
+If we now have 2 such rectangles, each can capture all possible divisions of a subset of 4 points for a total of 8.
+
+\subsection*{b)}
+The VC dimension of circles is \textbf{3}. Given 3 points which form a triangle, just 0, 1 and 3 points can be placed inside a circle trivially. And any 2 of them can be placed inside a circle to which they form the ends of a secant line without including the third so long as the circle's radius is large enough.
+
+Now consider 4 points which form a quadrilateral. If the quadrilateral. If the quadrilateral is convex, the circle which includes the 2 points withe greatest distance between them will contain at least 1 of the 2 other points. And if the quadrilateral concave, the circle containing points on the convex hull will contain all other points. A circle therefore cannot capture all possible divisions of 4 points.
+
+\subsection*{c)}
+The VC dimension of triangles is \textbf{7}. Consider 7 points which form a convex heptagon. If we label as many non-neighboring sets of corners as possible with one label, the most sets possible will be 3, either $1,0,1,0,1,0,1$ or $1,0,1,0,1,0,0$. A triangle originating in the center of the heptagon can cover up to 3 such discontinuous sets of corners along the edge of the heptagon by extending one of its corners past the edge of the heptagon to cover each set, as well as just 1 or 2 sets by extending just 1 or 2 corners.
+
+Now consider 8 points which form an octagon. If we alternate between the labels for each corner, the result will be 4 discontinuous sets of corners. As the triangle has only 3 corners which can cover a continuous section of points each, a triangle will not be able to capture the possible labeling of 4 discontinuous sets of corners.
+
+\subsection*{d)}
+The VC dimension of an $m$-dimensional "sphere" is $\mathbf{m+1}$. A circle is a 2-dimensional "sphere" so the argument used for it can be extended into higher dimensions. Given $m+1$ points in an $m$-dimensional space, 0, 1 and $m+1$ points can be trivially placed inside a sphere, while 2 through $m$ points can be placed inside a sphere to which they form the corners of a secant hyperplane without including the remaining points so long as the sphere's radius is large enough.
+
+Now consider $m+2$ points in an $m$-dimensional space. If the points form a convex polytope, a sphere which contains the $m$ most distance points will contain at least 1 other points, and if the polytope is concave the sphere containing the points on the convex hull will contain all other points. A $m$-dimensional sphere therefore cannot capture all possible divisions of $m+2$ points.
+
+\section*{Problem 6}
+See \texttt{bagging.py}.
+
+\section*{Problem 7}
+See \texttt{gradient\_boosting.py}.
+
+\end{document}

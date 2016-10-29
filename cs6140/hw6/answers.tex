@@ -1,0 +1,35 @@
+\documentclass[12pt]{article}
+\title{Homework 6}
+\author{Charles Heisler -- CS6140 -- 12/19/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{pbox}
+\usepackage{graphicx}
+\usepackage{xfrac}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+See \texttt{p1.py}.
+
+\section*{Problem 2}
+See \texttt{p2.py}.
+
+\section*{Problem 3}
+See \texttt{p3.py}.
+
+\section*{Problem 4}
+The constraint $\alpha_i \geq 0$ indicates that each data point $x_i$ must either contribute to the classifier or not. If $\alpha_i = 0$ then point $x_i$ lies within the margin and does not contribute to the classifier. If $\alpha_i > 0$ then point $x_i$ contributes to the classifier. The constraint $\alpha_i \leq C$ means that a point $x_i$ may not contribute an arbitrarily large amount to the classifier, and may even lay within the margin if necessary to prevent this from happening. When $0 < \alpha_i < C$, $x_i$ contributes to classifier by lying on the margin. When $\alpha_i = C$, $x_i$ contributes to the classifier by lying beyond the margin.
+
+\section*{Problem 5}
+
+\subsection*{a)}
+\includegraphics[scale=1.0]{plot.png} \\
+\[w = \langle 1,1 \rangle \qquad b = -1.5 \qquad \rho = \frac{\sqrt{2}}{4} \]
+
+\subsection*{b)}
+The support vectors are $\langle 0,1 \rangle$, $\langle 1,0 \rangle$, $\langle 1,1 \rangle$ and $\langle 2,0 \rangle$.
+\end{document}

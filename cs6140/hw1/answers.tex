@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+\title{Homework 1}
+\author{Charles Heisler -- CS6140 -- 9/22/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+	\begin{tabular}{c | c | c}
+		Data & Training Error & Test Error \\
+		\hline & & \\
+		Housing & 26.497282 & 24.281945 \\
+		Spambase & 0.084378 & 0.095197
+	\end{tabular}
+	
+\section*{Problem 2}
+	\begin{tabular}{c | c | c}
+		Data & Training Error & Test Error \\
+		\hline & & \\
+		Housing & 22.081273 & 22.638256 \\
+		Spambase & 0.118114 & 0.124544
+	\end{tabular}
+	
+	Regression outperformed the decision tree for the housing data, but did slightly worse for the spambase data.
+	
+\section*{Problem 3}
+	\subsection*{DHS Problem 8.1}
+		Suppose a node $N$ is split into $n$ children $C$ using a feature $f$ and $k-1$ thresholds $\theta$ such that for every data point in $C_i$ $\theta_{i-1} \leq f < \theta_i$ and $\theta_i < \theta_{i+1}$. Since data points cannot be added back by any subsequent split, only $\theta_{i-1} \leq f < \theta_i$ will hold for $C_i$ and its descendants. Therefore if the same $f$ and $\theta$ are used to split a descendant $N'$ of $N$, all resulting children $C'$ will be empty except for child $C'_i$, which will be identical to $N'$. The empty nodes can be removed and $N'$ replaced with $C'_i$ without changing the tree's functionality.
+
+	\subsection*{(a)}
+	Let $P(k)$ be that an $k$-way split of a node $N$, using a feature $f$ and $k-1$ thresholds $\theta$ such that for every data point in $C_i$ $\theta_{i-1} \leq f < \theta_i$ and $\theta_i < \theta_{i+1}$, can be implemented by an equivalent, binary subtree.
+	
+	As the base case, let $k=2$. A two-way split is by definition already a binary subtree, so $P(2)$ holds.
+	
+	Suppose that $P(k)$ holds and we have a $(k+1)$-way split using $k$ thresholds. Replace this split with binary one on threshold $\theta_k$. All data points on the left now satisfy $f < \theta_k$ and can be split $k$-ways using the first $k-1$ thresholds, which by $P(k)$ we know can be implemented as a binary subtree. All data points on the right satisfy $f \geq \theta_k$ and are identical to the original $(k+1)$th child. The new subtree is binary and equivalent, so $P(k+1)$ holds and $P(k)$ implies $P(k+1)$.
+	
+	$P(2)$ and $P(k) \implies P(k+1)$ in turn implies that $P(k)$ holds for all $k \geq 2$ by induction.
+	
+	\subsection*{(b)}
+	Let $L(B)$ be the number of levels in a binary subtree equivalent to a $B$-way split. The maximum number of levels possible will be achieved if the splits are made recursively on just one side, while the minimum number of levels possible will be when the splits are balanced equally on both sides. Therefore $\lceil \log_2B \rceil + 1 \leq L(B) \leq B$.
+	
+	\subsection*{(c)}
+	A functionally equivalent binary tree will have at least $3$ nodes, one parent and two children. Larger splits will result in a tree with $2B-1$ nodes.
+	
+\section*{Problem 4}
+	\subsection*{(a)}
+	Suppose a node $N$ divided using a $2$-way split $V=\{N_L,N_R\}$. The information content of this split can be measured using $H(V)=-p(N_L)\log_2N_L-p(N_R)\log$. It will be maximized if both $N_L$ and $N_R$ are equiprobable at $0.5$ each, giving $H(V) = 1$. Since these splits are used to obtain additional information about the datum being classified in the tree, the information content of the split imposes an upper limit on the reduction of entropy, which cannot exceed $1$ for a $2$-way split.
+	
+	\subsection*{(b)}
+	Suppose a node $N$ is divided by a $n$-way split $V$. The information content of this split will be maximized when all $n$ outcomes are equally probable:
+	
+	$$-\sum_{i=1}^n\frac{1}{n}\log_2\frac{1}{n} = -\log_2\frac{1}{n} = \log_2n$$
+	
+	The upper limit on the reduction in entropy for an $n$-way split is $\log_2n$.
+
+\section*{Problem 5}
+For a set of one-dimensional data points $[x_1, \cdots, x_n]$ and labels $[y_1, \cdots , y_n]$ values $a$ and $b$ can be found for the regression line formula $f(x)=ax+b$ using the normal form solution $w = (X^TX)^{-1}X^TY$. In this case $w=[a,b]$, $X$ is a $n \times 2$ matrix, where $X_1=[x_1,\cdots,x_n]$ and $X_2$ is a dummy column of one's for $b$, and $Y=[y_1,\cdots ,y_n]$.
+\begin{align}
+\begin{bmatrix}
+	a \\
+	b
+\end{bmatrix} &=
+\left(
+	\begin{bmatrix}
+		x_1 & 1 \\
+		\vdots & \vdots \\
+		x_n & 1
+	\end{bmatrix}^T
+	\begin{bmatrix}
+		x_1 & 1 \\
+		\vdots & \vdots \\
+		x_n & 1
+	\end{bmatrix}
+\right)^{-1}
+\begin{bmatrix}
+	x_1 & 1 \\
+	\vdots & \vdots \\
+	x_n & 1
+\end{bmatrix}^T
+\begin{bmatrix}
+	y_1 \\
+	\vdots \\
+	y_n
+\end{bmatrix} \\
+&= \begin{bmatrix}
+	\sum_{i=1}^nx_i^2 & \sum_{i=1}^nx_i \\
+	\sum_{i=1}^nx_i & n
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+	x_1 & 1 \\
+	\vdots & \vdots \\
+	x_n & 1
+\end{bmatrix}^T
+\begin{bmatrix}
+	y_1 \\
+	\vdots \\
+	y_n
+\end{bmatrix} \\
+&= \frac{1}{n\sum_{i=1}^nx_i^2-\left(\sum_{i=1}^nx_i\right)}
+\begin{bmatrix}
+	n & -\sum_{i=1}^nx_i \\
+	-\sum_{i=1}^nx_i & \sum_{i=1}^nx_i^2
+\end{bmatrix}
+\begin{bmatrix}
+	x_1 & 1 \\
+	\vdots & \vdots \\
+	x_n & 1
+\end{bmatrix}^T
+\begin{bmatrix}
+	y_1 \\
+	\vdots \\
+	y_n
+\end{bmatrix} \\
+&= \frac{1}{n\sum_{i=1}^nx_i^2-\left(\sum_{i=1}^nx_i\right)}
+\begin{bmatrix}
+	nx_1 - \sum_{i=1}^nx_i & \cdots & nx_n - \sum_{i=1}^nx_i \\
+	\sum_{i=1}^nx_i^2 - x_1\sum_{i=1}^nx_i & \cdots & \sum_{i=1}^nx_i^2 - x_n\sum_{i=1}^nx_i
+\end{bmatrix}
+\begin{bmatrix}
+	y_1 \\
+	\vdots \\
+	y_n
+\end{bmatrix} \\
+&= \frac{1}{n\sum_{i=1}^nx_i^2-\left(\sum_{i=1}^nx_i\right)}
+\begin{bmatrix}
+	n\sum_{i=1}^nx_iy_i - \sum_{i=1}^nx_i\sum_{i=1}^ny_i \\
+	\sum_{i=1}^nx_i^2\sum_{i=1}^ny_i-\sum_{i=1}^nx_i\sum_{i=1}^nx_iy_i
+\end{bmatrix}
+\end{align}
+The formulas for $a$ and $b$ are therefore:
+\begin{align}
+a &= \frac{n\sum_{i=1}^nx_iy_i - \sum_{i=1}^nx_i\sum_{i=1}^ny_i}{n\sum_{i=1}^nx_i^2-\left(\sum_{i=1}^nx_i\right)}
+\end{align}
+\begin{align}
+b &= \frac{\sum_{i=1}^nx_i^2\sum_{i=1}^ny_i-\sum_{i=1}^nx_i\sum_{i=1}^nx_iy_i}{n\sum_{i=1}^nx_i^2-\left(\sum_{i=1}^nx_i\right)}
+\end{align}
+
+\section*{Problem 7}
+	Suppose the convex hulls of $X_0$ and $X_1$ overlap. There must then exist a point $z$ such that $z = \sum_{i=1}^n\alpha_ix_{0_i} = \sum_{i=1}^n\beta_ix_{1_i}$ where $\alpha$ and $\beta$ are non-negative and sum to $1$.
+	
+	Suppose $X_0$ and $X_1$ are linearly separable. There must then exist values $w=[w_0,\cdots,w_n], k$ such that $w^Tx_{0_i} > k$ for all $x_{0_i}$ in ${X_0}$ and $w^Tx_{1_i} < k$ for all $x_{1_i}$ in $X_1$.
+
+	Consider the value of $w^Tz$. Because $z$ is in the convex hull of $X_0$ we can rewrite it in terms of $\sum_{i=1}^n\alpha_ix_{0_i}$:
+	
+	\begin{align}
+		w^Tz &= w^T\sum_{i=1}^n\alpha_ix_{0_i} \\
+		&= \sum_{i=1}^nw^T\alpha_ix_{0_i} \\
+		&= \sum_{i=1}^n\alpha_i\left(w^Tx_{0_i}\right)
+	\end{align}
+	
+	Since $w^Tx_{0_i} > k$ and $\alpha$ is non-negative and sums to $1$, $z > k$ must hold. Because $z$ is also in the convex hull of $X_1$ we can also rewrite it in terms $\sum_{i=1}^n\beta_ix_{1_i}$:
+	
+	\begin{align}
+		w^Tz &= w^T\sum_{i=1}^n\beta_ix_{1_i} \\
+		&= \sum_{i=1}^nw^T\beta_ix_{1_i} \\
+		&= \sum_{i=1}^n\beta_i\left(w^Tx_{1_i}\right)
+	\end{align}
+	
+	Since $w^Tx_{1_i} < k$ and $\beta$ is non-negative and sums to $1$, $z < k$ must hold. This, however, contradicts $z > k$, so $X_0$ and $X_1$ cannot simultaneously have overlapping convex hulls and be linearly separable.
+\end{document}

@@ -14,6 +14,7 @@ cs5600/src/tests/
 *.csv
 *.d
 *.data
+data/
 *.dsk
 *.dvi
 *.error
