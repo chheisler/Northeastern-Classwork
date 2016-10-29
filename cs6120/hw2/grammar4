@@ -1,0 +1,900 @@
+# Modified grammar4. Additional features of English implemented include:
+#	Vocatives, both stand alone and in imperatives
+#	Comparative and superlative adjectives
+#	Subordinating conjunction of clauses
+#	The Saxon genitive
+#	Questions involving Wh-adverbs
+
+99	START	S1
+0	START	S2
+
+## Beginning of human-written grammar.
+
+# Edit the rules and weights in this part of the grammar.
+# This is a very, very, very simple grammar to get you started.
+
+#--------------#
+# CLAUSE RULES #
+#--------------#
+
+# Sentences
+8	S1	DECL-CLS .
+2	S1	QUESTION ?
+2	S1	IMPERIATIVE !
+1	S1	PERSON !
+
+# Declarative clauses
+5	DECL-CLS	SG-NOM-NP SG-VP
+5	DECL-CLS	PL-NOM-NP PL-VP
+1	DECL-CLS	DECL-CLS SUBR-CONJ DECL-CLS
+
+# Subordinate clauses to verb
+1	SUBR-CLS	DECL-CLS
+1	SUBR-CLS	that DECL-CLS
+1	SUBR-CLS	if DECL-CLS
+1	SUBR-CLS	WH-PN SG-VP
+1	SUBR-CLS	WH-PN GAP-VP
+1	SUBR-CLS	WH-ADV VP
+
+# Questions
+4	QUESTION	YES-NO-Q
+4	QUESTION	WH-ADV YES-NO-Q
+4	QUESTION	WH-PN SG-VP
+4	QUESTION	OBL-CONTENT-Q
+1	QUESTION	QUESTION SUBR-CONJ DECL-CLS
+
+# Yes-no questions
+1	YES-NO-Q	does SG-NOM-NP INF-VP
+1	YES-NO-Q	do PL-NOM-NP INF-VP
+1	YES-NO-Q	MDL-V NOM-NP MDL-VP
+1	YES-NO-Q	has SG-NOM-NP PST-PRT-VP
+1	YES-NO-Q	have PL-NOM-NP PST-PRT-VP
+1	YES-NO-Q	had NOM-NP PST-PRT-VP
+1	YES-NO-Q	BE-RAISE PRS-PRT-VP
+1	YES-NO-Q	BE-RAISE PREDICATE
+
+# Oblique content questions
+1	OBL-CONTENT-Q	WH-PN does SG-NOM-NP INF-GAP-VP
+1	OBL-CONTENT-Q	WH-PN do PL-NOM-NP INF-GAP-VP
+1	OBL-CONTENT-Q	WH-PN MDL-V NOM-NP MDL-GAP-VP
+1	OBL-CONTENT-Q	WH-PN has SG-NOM-NP PST-PRT-GAP-VP
+1	OBL-CONTENT-Q	WH-PN have PL-NOM-NP PST-PRT-GAP-VP
+1	OBL-CONTENT-Q	WH-PN had NOM-NP PST-PRT-GAP-VP
+1	OBL-CONTENT-Q	WH-PN BE-RAISE PRS-PRT-GAP-VP
+1	OBL-CONTENT-Q	WH-PN BE-RAISE
+
+# Be raising
+1	BE-RAISE	is SG-NOM-NP
+1	BE-RAISE	are PL-NOM-NP
+1	BE-RAISE	was SG-NOM-NP
+1	BE-RAISE	were PL-NOM-NP
+
+# Imperiatives
+1	IMPERIATIVE	IMP-BAR
+1	IMPERIATIVE	PERSON , IMP-BAR
+1	IMPERIATIVE	IMP-BAR , PERSON
+
+# Imperative bars
+5	IMP-BAR	INF-VP
+5	IMP-BAR	do not INF-VP
+1	IMP-BAR INF-VP SUBR-CONJ DECL-CLS
+1	IMP-BAR	do not INF-VP SUBR-CONJ DECL-CLS
+
+#-------------------#
+# NOUN PHRASE RULES #
+#-------------------#
+
+# Nominative noun phrases
+1	NOM-NP	SG-NOM-NP
+1	NOM-NP	PL-NOM-NP
+
+# Singular nominative noun phrases
+1	SG-NOM-NP	SG-NOM-PN
+1   SG-NOM-NP	SG-NP
+
+# Plural nominative noun phrases
+4	PL-NOM-NP	PL-NOM-PN
+4	PL-NOM-NP	PL-NP
+1	PL-NOM-NP	NOM-NP NOM-CONJ NOM-NP
+
+# Oblique noun phrases
+1	OBL-NP	SG-OBL-NP
+1	OBL-NP	PL-OBL-NP
+
+# Singular oblique noun phrases
+1	SG-OBL-NP	SG-OBL-PN
+1	SG-OBL-NP	SG-NP
+
+# Plural oblique noun phrases
+2	PL-OBL-NP	PL-OBL-PN
+2	PL-OBL-NP	PL-NP
+1	PL-OBL-NP	OBL-NP NOM-CONJ OBL-NP
+
+# Singular noun phrases
+1	SG-NP	CNT-NP
+1	SG-NP	MSS-NP
+
+# Count noun phrases
+1	CNT-NP	CNT-DET CNT-PP-NBAR
+1	CNT-NP	POS-P CNT-NUM-NBAR
+1	CNT-NP	SG-DEF-DET CNT-NUM-NBAR
+1	CNT-NP	PROPER
+
+# Mass noun phases
+1	MSS-NP	MSS-DET MSS-REL-NBAR
+1	MSS-NP	POS-P MSS-REL-NBAR
+1	MSS-NP	MSS-REL-NBAR
+
+# Plural noun phrases
+1	PL-NP	PL-DET PL-NUM-NBAR
+1	PL-NP	POS-P PL-NUM-NBAR
+1	PL-NP	PL-NUM-NBAR
+
+# Singular count numeral N-bars
+1	CNT-NUM-NBAR	SG-NUM CNT-REL-NBAR
+1	CNT-NUM-NBAR	CNT-REL-NBAR
+
+# Plural numeral N-bars
+1	PL-NUM-NBAR	PL-NUM PL-REL-NBAR
+1	PL-NUM-NBAR PL-REL-NBAR
+
+# Singular count relative clause N-bars
+1	CNT-REL-NBAR	CNT-PP-NBAR SG-REL-CLS
+6	CNT-REL-NBAR	CNT-PP-NBAR
+
+# Mass relative clause N-bars
+1	MSS-REL-NBAR	MSS-PP-NBAR SG-REL-CLS
+6	MSS-REL-NBAR	MSS-PP-NBAR
+
+# Plural relative clause N-bars
+1	PL-REL-NBAR	PL-PP-NBAR PL-REL-CLS
+4	PL-REL-NBAR	PL-PP-NBAR
+
+# Singular count Prepositional N-bars
+1	CNT-PP-NBAR	CNT-PP-NBAR PP
+6	CNT-PP-NBAR	CNT-ADJ-NBAR
+
+# Mass Prepositional N-bars
+1	MSS-PP-NBAR	MSS-PP-NBAR PP
+6	MSS-PP-NBAR	MSS-ADJ-NBAR
+
+# Plural Prepositional N-bars
+1	PL-PP-NBAR	PL-PP-NBAR PP
+6	PL-PP-NBAR	PL-ADJ-NBAR
+
+# Singular count adjectival N-bars
+1	CNT-ADJ-NBAR	ADJ CNT-ADJ-NBAR
+4	CNT-ADJ-NBAR	CNT-N
+
+# Mass adjectival N-bars
+1	MSS-ADJ-NBAR	ADJ MSS-ADJ-NBAR
+4	MSS-ADJ-NBAR	MSS-N
+
+# Plural adjectival N-bars
+1	PL-ADJ-NBAR	ADJ PL-ADJ-NBAR
+4	PL-ADJ-NBAR	PL-N
+
+# Proper nouns
+1	PROPER	PERSON
+1	PROPER	PLACE
+1	PROPER	the THING
+
+
+#-------------------#
+# VERB PHRASE RULES #
+#-------------------#
+
+# Generic verb phrase
+1	VP	SG-VP
+1	VP	PL-VP
+
+# Verb phrases with a gap
+1	GAP-VP	SG-NOM-NP SG-GAP-VP
+1	GAP-VP	PL-NOM-NP PL-GAP-VP
+
+# Singular verb phrases
+1	SG-VP	SG-ADV-VBAR
+1	SG-VP	SG-ADV-VBAR
+
+# Singular verb phrases with a gap
+1	SG-GAP-VP	SG-PRS-GAP-VP
+1	SG-GAP-VP	SG-PST-GAP-VP
+
+# Plural verb phrases
+1	PL-VP	PL-ADV-VBAR
+1	PL-VP	PL-ADV-VBAR
+
+# Plural verb phrases with a gap
+1	PL-GAP-VP	PL-PRS-GAP-VP
+1	PL-GAP-VP	PL-PST-GAP-VP
+
+# Singular adverbial v-bars
+1	SG-ADV-VBAR	SG-PP-VBAR ADV
+1	SG-ADV-VBAR	SG-PP-VBAR
+
+# Plural adverbial v-bars
+1	PL-ADV-VBAR PL-PP-VBAR ADV
+1	PL-ADV-VBAR PL-PP-VBAR
+
+# Singular prepositional v-bars
+1	SG-PP-VBAR	SG-PRS-VP PP
+1	SG-PP-VBAR	SG-PST-VP PP
+1	SG-PP-VBAR	SG-PRS-VP
+1	SG-PP-VBAR	SG-PST-VP
+
+# Plural prepositional v-bars
+1	PL-PP-VBAR	PL-PRS-VP PP
+1	PL-PP-VBAR	PL-PST-VP PP
+1	PL-PP-VBAR	PL-PRS-VP
+1	PL-PP-VBAR	PL-PST-VP
+
+# Singular present verb phrases
+1	SG-PRS-VP	SG-INTR-V
+1	SG-PRS-VP	SG-TR-V OBL-NP
+1	SG-PRS-VP	SG-SUBR-V SUBR-CLS
+1	SG-PRS-VP	PRS-MDL-V-NEG-BAR MDL-VP
+1	SG-PRS-VP	HAS-NEG-BAR PST-PRT-VP
+1	SG-PRS-VP	IS-NEG-BAR PRS-PRT-VP
+1	SG-PRS-VP	DOES-NEG-BAR INF-VP
+1	SG-PRS-VP	IS-NEG-BAR PREDICATE
+1	SG-PRS-VP	IS-NEG-BAR PASS-VP
+
+# Singular present verb phases with gap
+1	SG-PRS-GAP-VP	SG-TR-V
+1	SG-PRS-GAP-VP	PRS-MDL-V-NEG-BAR MDL-GAP-VP
+1	SG-PRS-GAP-VP	HAS-NEG-BAR PST-PRT-GAP-VP
+1	SG-PRS-GAP-VP	IS-NEG-BAR PRS-PRT-GAP-VP
+1	SG-PRS-GAP-VP	DOES-NEG-BAR INF-GAP-VP
+1	SG-PRS-GAP-VP	IS-NEG-BAR
+
+# Singular past verb phrases
+1	SG-PST-VP	PST-VP
+1	SG-PST-VP	WAS-NEG-BAR PRS-PRT-VP
+1	SG-PST-VP	WAS-NEG-BAR PREDICATE
+1	SG-PST-VP	WAS-NEG-BAR PASS-VP
+
+# Singular past verb phrases with gap
+1	SG-PST-GAP-VP	PST-GAP-VP
+1	SG-PST-GAP-VP	WAS-NEG-BAR PRS-PRT-GAP-VP
+1	SG-PST-GAP-VP	WAS-NEG-BAR
+
+# Plural present verb phrases
+1	PL-PRS-VP	PL-INTR-V
+1	PL-PRS-VP	PL-TR-V OBL-NP
+1	PL-PRS-VP	PL-SUBR-V SUBR-CLS
+1	PL-PRS-VP	PRS-MDL-V-NEG-BAR MDL-VP
+1	PL-PRS-VP	HAVE-NEG-BAR PST-PRT-VP
+1	PL-PRS-VP	ARE-NEG-BAR PRS-PRT-VP
+1	PL-PRS-VP	DO-NEG-BAR INF-VP
+1	PL-PRS-VP	ARE-NEG-BAR PREDICATE
+1	PL-PRS-VP	ARE-NEG-BAR PASS-VP
+
+# Plural present verb phrases with gap
+1	PL-PRS-GAP-VP	PL-TR-V
+1	PL-PRS-GAP-VP	PRS-MDL-V-NEG-BAR MDL-GAP-VP
+1	PL-PRS-GAP-VP	HAVE-NEG-BAR PST-PRT-GAP-VP
+1	PL-PRS-GAP-VP	ARE-NEG-BAR PRS-PRT-GAP-VP
+1	PL-PRS-GAP-VP	DO-NEG-BAR INF-GAP-VP
+1	PL-PRS-GAP-VP	ARE-NEG-BAR
+
+# Plural past verb phrases
+1	PL-PST-VP	PST-VP
+1	PL-PST-VP	WERE-NEG-BAR PRS-PRT-VP
+1	PL-PST-VP	WERE-NEG-BAR PREDICATE
+1	PL-PST-VP	WERE-NEG-BAR PASS-VP
+
+# Plural pase verb phrases with gap
+1	PL-PST-GAP-VP	PST-GAP-VP
+1	PL-PST-GAP-VP	WERE-NEG-BAR PRS-PRT-GAP-VP
+1	PL-PST-GAP-VP	WERE-NEG-BAR
+
+# Past verb phrases
+2	PST-VP	PST-INTR-V
+2	PST-VP	PST-TR-V OBL-NP
+1	PST-VP	PST-SUBR-V SUBR-CLS
+1	PST-VP	PST-MDL-V-NEG-BAR MDL-VP
+1	PST-VP	HAD-NEG-BAR PST-PRT-VP
+
+# Past verb phrases with gap
+1	PST-GAP-VP	PST-TR-V
+1	PST-GAP-VP	PST-MDL-V-NEG-BAR MDL-GAP-VP
+1	PST-GAP-VP	HAD-NEG-BAR PST-PRT-GAP-VP
+
+# Bars for alternative between verbs with and without not
+1	PRS-MDL-V-NEG-BAR	PRS-MDL-V
+1	PRS-MDL-V-NEG-BAR	PRS-MDL-V not
+1	PST-MDL-V-NEG-BAR	PST-MDL-V
+1	PST-MDL-V-NEG-BAR	PST-MDL-V not
+1	DOES-NEG-BAR		does
+1	DOES-NEG-BAR		does not
+1	DO-NEG-BAR			do
+1	DO-NEG-BAR			do not
+1	HAS-NEG-BAR			has
+1	HAS-NEG-BAR			has not
+1	HAVE-NEG-BAR		have
+1	HAVE-NEG-BAR		have not
+1	HAD-NEG-BAR			had
+1	HAD-NEG-BAR			had not
+1	IS-NEG-BAR			is
+1	IS-NEG-BAR			is not
+1	ARE-NEG-BAR			are
+1	ARE-NEG-BAR			are not
+1	WAS-NEG-BAR			was
+1	WAS-NEG-BAR			was not
+1	WERE-NEG-BAR		were
+1	WERE-NEG-BAR		were not
+
+# Modal verb phrases
+1	MDL-VP	INF-VP
+1	MDL-VP	have PST-PRT-VP
+1	MDL-VP	be PRS-PRT-VP
+1	MDL-VP	be PREDICATE
+1	MDL-VP	be PASS-VP
+
+# Modal verb phrases with gap
+1	MDL-GAP-VP	INF-GAP-VP
+1	MDL-GAP-VP	have PST-PRT-GAP-VP
+1	MDL-GAP-VP	be PRS-PRT-GAP-VP
+1	MDL-GAP-VP	be
+
+# Past participle verb phrases
+2	PST-PRT-VP	PST-PRT-INTR-V
+2	PST-PRT-VP	PST-PRT-TR-V OBL-NP
+1	PST-PRT-VP	PST-PRT-SUBR-V SUBR-CLS
+1	PST-PRT-VP	been PRS-PRT-VP
+1	PST-PRT-VP	been PREDICATE
+1	PST-PRT-VP	been PASS-VP
+
+# Past participle verb phrases with gap
+1	PST-PRT-GAP-VP	PST-PRT-TR-V
+1	PST-PRT-GAP-VP	been PRS-PRT-GAP-VP
+1	PST-PRT-GAP-VP	been
+
+# Present participle verb phrases
+2	PRS-PRT-VP	PRS-PRT-INTR-V
+2	PRS-PRT-VP	PRS-PRT-TR-V OBL-NP
+1	PRS-PRT-VP	PRS-PRT-SUBR-V SUBR-CLS
+1	PRS-PRT-VP	being PREDICATE
+1	PRS-PRT-VP	being PASS-VP
+
+# Present participle verb phrases with gap
+1	PRS-PRT-GAP-VP	PRS-PRT-TR-V
+1	PRS-PRT-GAP-VP	being
+
+# Infinitive verb phrases
+2	INF-VP	INF-INTR-V
+2	INF-VP	INF-TR-V OBL-NP
+1	INF-VP	INF-SUBR-V SUBR-CLS
+
+# Infinitive verb phrases with gap
+1	INF-GAP-VP	INF-TR-V
+
+# Passive verb phrases
+1	PASS-VP	PST-PRT-TR-V
+1	PASS-VP	PST-PRT-TR-V by OBL-NP
+
+# Modal verbs
+1	MDL-V	PRS-MDL-V
+1	MDL-V	PST-MDL-V
+
+
+#----------------------------#
+# PREPOSITIONAL PHRASE RULES #
+#----------------------------#
+
+# Prepositional phrase
+1	PP	PREP OBL-NP
+
+
+#------------------#
+# DETERMINER RULES #
+#------------------#
+
+# Singular count determiners
+1	CNT-DET	SG-INDEF-DET
+1	CNT-DET	SG-DEF-DET
+
+# Singular mass determiners
+1	MSS-DET	PL-INDEF-DET
+1	MSS-DET	SG-DEF-DET
+
+# Plural determiners
+1	PL-DET	PL-INDEF-DET
+1	PL-DET	PL-DEF-DET
+
+
+#-----------------------#
+# RELATIVE CLAUSE RULES #
+#-----------------------#
+
+# Singular relative clause
+1	SG-REL-CLS	that SG-VP
+1	SG-REL-CLS	OBL-REL-CLS	
+
+# Plural relative clause
+1	PL-REL-CLS	that PL-VP
+1	PL-REL-CLS	OBL-REL-CLS
+
+# Oblique relative clause
+1	OBL-REL-CLS	that SG-NOM-NP SG-GAP-VP
+1	OBL-REL-CLS	PL-NOM-NP PL-GAP-VP
+
+
+#-----------------#
+# PREDICATE RULES #
+#-----------------#
+
+# Acceptable predicates for copula
+1	PREDICATE	OBL-NP
+1	PREDICATE	ADJ
+1	PREDICATE	CMP-ADJ
+1	PREDICATE	the SPR-ADJ
+1	PREDICATE	POS-P SPR-ADJ
+
+
+#-------------------------#
+# POSSESSIVE PHRASE RULES #
+#-------------------------#
+
+4	POS-P	POS-PN
+1	POS-P	SG-NP 's
+
+## End of human-written grammar
+
+## Vocabulary section
+# This is a hand-generated set of preterminal rules.
+# It specifies a simple tag set which will be handled by the S2
+# grammar and which can (though doesn't necessarily need to be)
+# handled by the S1 grammar.
+
+# The weights and left-hand-side tags given here may be changed, but
+# no new vocabulary items are to be added. That keeps you from
+# stumping other parsers simply by adding new words.
+
+# Miscellaneous items that don't fit into any of our simple tags are
+# given to Misc.  You will want to develop your own tags for these!
+
+# Singular nominative pronouns
+1	SG-NOM-PN he
+1   SG-NOM-PN she
+1   SG-NOM-PN it
+1   SG-NOM-PN this
+1	SG-NOM-PN that
+1	SG-NOM-PN one
+
+# Plural nominative pronouns
+1	PL-NOM-PN they
+
+# Singular oblique pronouns
+1	SG-OBL-PN him
+1	SG-OBL-PN her
+1	SG-OBL-PN it
+1	SG-OBL-PN this
+1	SG-OBL-PN that
+1	SG-OBL-PN one
+
+# Plural oblique pronouns
+1	PL-OBL-PN them
+
+# Wh-pronouns
+1	WH-PN	what
+1	WH-PN	who
+
+# Singular count nouns
+1	CNT-N	castle
+1	CNT-N	king
+1	CNT-N	defeater
+1	CNT-N	sovereign
+1	CNT-N	corner
+1	CNT-N	servant
+1	CNT-N	land
+1	CNT-N	quest
+1	CNT-N	chalice
+1	CNT-N	horse
+1	CNT-N	fruit
+1	CNT-N	swallow
+1	CNT-N	sun
+1	CNT-N	winter
+1	CNT-N	coconut
+1	CNT-N	pound
+1	CNT-N	husk
+1	CNT-N	home
+1	CNT-N	weight
+1	CNT-N	story
+
+# Mass nouns
+1	MSS-N	land
+1	MSS-N	fruit
+1	MSS-N	weight
+
+# Plural nouns
+1	PL-N	coconuts
+1	PL-N	halves
+1	PL-N	snows
+1	PL-N	mountains
+1	PL-N	areas
+1	PL-N	strangers
+1	PL-N	inches
+1	PL-N	snakes
+1	PL-N	ants
+1	PL-N	nights
+1	PL-N	Britons
+1	PL-N	Saxons
+
+# Singular indefinite determiners
+1	SG-INDEF-DET	a
+1	SG-INDEF-DET	another
+1	SG-INDEF-DET	any
+1	SG-INDEF-DET	no
+1	SG-INDEF-DET	each
+1	SG-INDEF-DET	every
+1	SG-INDEF-DET	one
+
+# Plural indefinite determiners
+1	PL-INDEF-DET	any
+1	PL-INDEF-DET	no
+
+# Singular definite determiners
+1	SG-DEF-DET	the
+1	SG-DEF-DET	this
+1	SG-DEF-DET	that
+
+# Plural definite determiners
+1	PL-DEF-DET	the
+
+# Possessive personal pronouns
+1	POS-PN	her
+1	POS-PN	his
+1	POS-PN	its
+1	POS-PN	their
+
+# Prepositions.
+1	PREP	above
+1	PREP	across
+3	PREP	at
+1	PREP	below
+5	PREP	by
+1	PREP	for
+1	PREP	from
+1	PREP	into
+1	PREP	near
+1	PREP	of
+2	PREP	on
+1	PREP	over
+1	PREP	through
+8	PREP	with
+
+# Names of people.
+1	PERSON	Arthur
+1	PERSON	Guinevere
+1	PERSON	Sir Lancelot
+1	PERSON	Sir Bedevere
+1	PERSON	Zoot
+1	PERSON	Dingo
+1	PERSON	Patsy
+1	PERSON	Uther Pendragon
+
+# Proper place names
+1	PLACE	Camelot
+1	PLACE	England
+
+# Proper things
+1	THING	Holy Grail
+1	THING	Round Table
+
+# Singular intransitive verbs
+1	SG-INTR-V drinks
+1	SG-INTR-V rides
+1	SG-INTR-V speaks
+1	SG-INTR-V grows
+1	SG-INTR-V goes
+1	SG-INTR-V migrates
+1	SG-INTR-V knows
+
+# Plural intransitive verbs
+1	PL-INTR-V drink
+1	PL-INTR-V ride
+1	PL-INTR-V speak
+1	PL-INTR-V grow
+1	PL-INTR-V go
+1	PL-INTR-V migrate
+1	PL-INTR-V know
+
+# Past intransitive verbs
+1	PST-INTR-V	drank
+1	PST-INTR-V	rode
+1	PST-INTR-V	spoke
+1	PST-INTR-V	grew
+1	PST-INTR-V	migrated
+1	PST-INTR-V	knew
+
+# Past participle intransitive verbs
+1	PST-PRT-INTR-V	spoken
+1	PST-PRT-INTR-V	ridden
+1	PST-PRT-INTR-V	drunk
+1	PST-PRT-INTR-V	grown
+1	PST-PRT-INTR-V	migrated
+1	PST-PRT-INTR-V	known
+
+# Present participle intransitive verbs
+1	PRS-PRT-INTR-V	speaking
+1	PRS-PRT-INTR-V	riding
+1	PRS-PRT-INTR-V	drinking
+1	PRS-PRT-INTR-V	growing
+1	PRS-PRT-INTR-V	migrating
+1	PRS-PRT-INTR-V	knowing
+
+# Infinitive intransitive verbs
+1	INF-INTR-V	speak
+1	INF-INTR-V	ride
+1	INF-INTR-V	drink
+1	INF-INTR-V	grow
+1	INF-INTR-V	migrate
+1	INF-INTR-V	know
+
+# Singular transitive verbs
+1	SG-TR-V has
+1	SG-TR-V covers
+1	SG-TR-V drinks
+1	SG-TR-V carries
+1	SG-TR-V rides
+1	SG-TR-V knows
+1	SG-TR-V	suggests
+
+# Plural transitive verbs
+1	PL-TR-V have
+1	PL-TR-V cover
+1	PL-TR-V drink
+1	PL-TR-V carry
+1	PL-TR-V ride
+1	PL-TR-V	know
+1	PL-TR-V	suggest
+
+# Past transitive verbs
+1	PST-TR-V	had
+1	PST-TR-V	covered
+1	PST-TR-V	rode
+1	PST-TR-V	drank
+1	PST-TR-V	carried
+1	PST-TR-V	knew
+1	PST-TR-V	suggested
+
+# Past participle transitive verbs
+1	PST-PRT-TR-V	had
+1	PST-PRT-TR-V	covered
+1	PST-PRT-TR-V	ridden
+1	PST-PRT-TR-V	drunk
+1	PST-PRT-TR-V	carried
+1	PST-PRT-TR-V	suggested
+1	PST-PRT-TR-V	known
+
+# Present participle transitive verbs
+1 	PRS-PRT-TR-V	having
+1	PRS-PRT-TR-V	covering
+1	PRS-PRT-TR-V	being
+1	PRS-PRT-TR-V	riding
+1	PRS-PRT-TR-V	drinking
+1	PRS-PRT-TR-V	knowing
+1	PRS-PRT-TR-V	suggesting
+
+# Infinitive transitive verbs
+1	INF-TR-V	have
+1	INF-TR-V	cover
+1	INF-TR-V	ride
+1	INF-TR-V	drink
+1	INF-TR-V	carry
+1	INF-TR-V	suggest
+1	INF-TR-V	know
+
+# Singular subordinating verbs
+1	SG-SUBR-V	suggests
+1	SG-SUBR-V	knows
+
+# Plural subordinating verbs
+1	PL-SUBR-V	suggest
+1	PL-SUBR-V	know
+
+# Past subordinating verbs
+1	PST-SUBR-V	knew
+1	PST-SUBR-V	suggested
+
+# Past participle subordinating verbs
+1	PST-PRT-SUBR-V	suggested
+1	PST-PRT-SUBR-V	known
+
+# Present participle subordinating verbs
+1	PRS-PRT-SUBR-V	knowing
+1	PRS-PRT-SUBR-V	suggesting
+
+# Infinitive subordinating verbs
+1	INF-SUBR-V	suggest
+1	INF-SUBR-V	know
+
+# Present modal verbs
+1	PRS-MDL-V	can
+1	PRS-MDL-V	may
+1	PRS-MDL-V	might
+1	PRS-MDL-V	must
+1	PRS-MDL-V	shall
+1	PRS-MDL-V	will
+
+# Past modal verbs
+1	PST-MDL-V	could
+1	PST-MDL-V	would
+
+# Adjectives.
+1	ADJ	bloody
+1	ADJ	weary
+1	ADJ	unable
+1	ADJ	trusty
+1	ADJ	further
+1	ADJ	sacred
+1	ADJ	tropical
+1	ADJ	indigenous
+1	ADJ	temperate
+1	ADJ	hot
+1	ADJ	lucky
+1	ADJ	simple
+1	ADJ	tiny
+1	ADJ	hard	
+1	ADJ	sensational
+1	ADJ	comparable
+1	ADJ	angolian
+1	ADJ	yellow
+1	ADJ	plodding
+
+# Comparative adjectives
+1	CMP-ADJ	bloodier
+1	CMP-ADJ	wearier
+1	CMP-ADJ	trustier
+1	CMP-ADJ	hotter
+1	CMP-ADJ	simpler
+1	CMP-ADJ	tinier
+1	CMP-ADJ	harder
+
+# Superlative adjectives
+1	SPR-ADJ	bloodiest
+1	SPR-ADJ	weariest
+1	SPR-ADJ	trustiest
+1	SPR-ADJ	hottest
+1	SPR-ADJ	simplest
+1	SPR-ADJ	tiniest
+1	SPR-ADJ	hardest
+
+# Adverbs
+1	ADV	again
+1	ADV	already
+1	ADV	currently
+1	ADV	frequently
+1	ADV	precisely
+1	ADV	south
+1	ADV	successfully
+1	ADV	unfortunately
+
+# Wh-adverbs
+1	WH-ADV	how
+1	WH-ADV	when
+1	WH-ADV	where
+1	WH-ADV	why
+
+# Singular numbers
+1	SG-NUM	one
+
+# Plural numerals
+1	PL-NUM	eight
+1	PL-NUM	five
+1	PL-NUM	5.5
+1	PL-NUM	sixty
+1	PL-NUM	5,000
+
+# Nominal conjunctions
+2	NOM-CONJ	and
+1	NOM-CONJ	or
+
+# Subordinating conjunctions
+1	SUBR-CONJ	while
+1	SUBR-CONJ	because
+1	SUBR-CONJ	if
+
+# End-of-sentence.
+1	Misc	!
+1	Misc	.
+1	Misc	?
+
+# Pauses.
+1	Misc	,
+1	Misc	...
+1	Misc	--
+1	Misc	;
+1	Misc	:
+
+# Coordinating conjunctions.
+1	Misc	and
+1	Misc	but
+1	Misc	or
+1	Misc	either
+1	Misc	nor
+1	Misc	neither
+1	Misc	so
+
+# Expletive.
+1	Misc	there
+
+# Subordinating conjunctions.
+1	Misc	that
+1	Misc	so
+
+# Modals.
+1	Misc	ought
+
+# 'do'/'does'
+1	Misc	do
+1	Misc	does
+
+# 'to'
+1	Misc	to
+
+# 'not'
+1	Misc	not
+
+# Wh-determiners.
+1	Misc	that
+1	Misc	what
+1	Misc	which
+
+# Wh possessive pronoun.
+1	Misc	whose
+
+## S2 tag bigram model
+
+# You may change the weights here or add new rules if you introduce
+# new tags.
+
+1	S2	_Det
+1	S2	_Misc
+1	S2	_Noun
+1	S2	_PREP
+1	S2	_PERSON
+1	S2	_VerbT
+1	_Det	Det
+1	_Det	Det _Det
+1	_Det	Det _Misc
+1	_Det	Det _Noun
+1	_Det	Det _PREP
+1	_Det	Det _PERSON
+1	_Det	Det _VerbT
+1	_Misc	Misc
+1	_Misc	Misc _Det
+1	_Misc	Misc _Misc
+1	_Misc	Misc _Noun
+1	_Misc	Misc _PREP
+1	_Misc	Misc _PERSON
+1	_Misc	Misc _VerbT
+1	_Noun	Noun
+1	_Noun	Noun _Det
+1	_Noun	Noun _Misc
+1	_Noun	Noun _Noun
+1	_Noun	Noun _PREP
+1	_Noun	Noun _PERSON
+1	_Noun	Noun _VerbT
+1	_PREP	PREP
+1	_PREP	PREP _Det
+1	_PREP	PREP _Misc
+1	_PREP	PREP _Noun
+1	_PREP	PREP _PREP
+1	_PREP	PREP _PERSON
+1	_PREP	PREP _VerbT
+1	_PERSON	PERSON
+1	_PERSON	PERSON _Det
+1	_PERSON	PERSON _Misc
+1	_PERSON	PERSON _Noun
+1	_PERSON	PERSON _PREP
+1	_PERSON	PERSON _PERSON
+1	_PERSON	PERSON _VerbT
+1	_VerbT	VerbT
+1	_VerbT	VerbT _Det
+1	_VerbT	VerbT _Misc
+1	_VerbT	VerbT _Noun
+1	_VerbT	VerbT _PREP
+1	_VerbT	VerbT _PERSON
+1	_VerbT	VerbT _VerbT

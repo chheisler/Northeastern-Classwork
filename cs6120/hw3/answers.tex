@@ -1,0 +1,55 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\begin{document}
+\noindent Charles Heisler \\
+CS6120 Spring 15 \\
+Homework 3 \\
+04/21/2015
+
+\begin{enumerate}
+	\item \mbox{}
+	\begin{enumerate}
+		\item $\exists e_1 [present(e_1) \ \land \ act(e_1,like) \ \land \ experience(e_1,Angus) \ \land \ \exists p_1 [person(p_1) \ \land \ stimulus(e_1,p_1)]] \ \land \ \exists e_2 [present(e_2) \ \land \ act(e_2,like) \ \land \ \exists p_2 [person(p_2) \ \land \ experiencer(e_2,p_2)] \ \land \ stimulus(e_2,Julia)]$
+		
+		\item $\not\exists e [present(e) \ \land \ act(e,smile) \ \land \ \exists p [person(p) \ \land \ agent(e,p)] \ \land \ theme(e,Pat)]$
+	
+		\item $\not\exists e [past(e) \ \land \ (act(e,cough) \ \lor \ act(e,sneeze)) \ \land \ \exists p [person(p) \ \land \ experiencer(e,p)]]$
+	\end{enumerate}
+	
+	\item \mbox{}
+	\begin{enumerate}
+		\item $\lambda p [\exists e_1 [act(e_1,feed) \ \land \ agent(e_1,p) \ \land \ patient(e_1,Cyril)] \ \land \ \exists e_2 [act(e_2,give) \ \land \ agent(e_2,p) \ \land \ \exists c [cappucino(c) \ \land \ patient(e_2,c)] \ \land \ recipient(e_2,Angus)]]$
+		
+		\item $\lambda p_1[\forall p_2[person(p_2) \Rightarrow \exists e[act(e,love) \ \land \ stimulus(e,p_1) \ \land \ experiencer(e,p_2)]]]$
+		
+		\item $\lambda p_1 \allowbreak [\forall p_2 \allowbreak [person(p_2) \Rightarrow \exists e_1 \allowbreak [act(e_1,love) \ \land \ stimulus(e_1,p_1) \ \land \ experiencer(e_1,p_2)]] \\ \land \not\exists e_2[act(e_2,detest) \ \land \ stimulus(e_2,p_1) \ \land \exists p_3[person(p_3) \ \land \ experiencer(e_2,p_3)]]]$
+	\end{enumerate}
+	\item $\lambda z . \lambda x . \forall y . (dog(y) \Rightarrow z(x,y))$
+	
+	\item $\lambda w . \lambda z . \lambda x . \exists y . (present(y) \ \land \ w(x,y,z))$
+	
+	\item $P([A A] \vert A) \ P(wonderful/wunderbar \vert A) \ P(!/! \vert A)$
+	
+	\item $P([A A] \vert A) \cdot P(wonderful/wunderbar \vert A) \cdot (!/! \vert A) \\
+	+ \allowbreak (
+		2P([A A] \vert A)^6 \cdot P(\langle A A \rangle \vert A)^2
+		+ P([A A] \vert A)^2 \cdot P(\langle A A \rangle \vert A)^6
+	) \cdot \allowbreak (
+		P(wonderful/wunderbar \vert A) \cdot P(!/\epsilon \vert A) \cdot P(\epsilon/! \vert A)
+		+ P(wonderful/\epsilon \vert A) \cdot P(\epsilon/wunderbar \vert A) \cdot P(!/! \vert A)
+	) \\
+	+ \allowbreak (
+		6P([A A] \vert A)^8 \cdot P(\langle A A \rangle \vert A)^4 + 6P([A A] \vert A)^4 \cdot P (\langle A A \rangle \vert A)^8
+	) \cdot P(wonderful/\epsilon \vert A) \cdot P(!/\epsilon \vert A) \cdot P(\epsilon/wunderbar \vert A) \cdot P(\epsilon/! \vert A)$
+	
+	Different derivations involving $\epsilon$ can result in identical alignments. For example, the derivations $[[wonderful/wunderbar !/\epsilon] \epsilon/!]$ and $\allowbreak [wonderful/wunderbar \allowbreak [!/\epsilon \epsilon/!]]$ both correspond to the alignment $(wonderful \rightarrow wunderbar, ! \rightarrow \epsilon, \epsilon \rightarrow !)$.
+	
+	\item The code for the alignment parser is defined in the included file align.py while the file test.py contains the code that uses the aligner to align the given English and German sentences. Also included is a file test, which can be run from the command line in a Unix environment with Python in the path. The directory in which it is run must also contain align.py, itg.dict, test.en and test.de. It can be run with no arguments, or with a single integer value, interpreted as a boolean representing whether reversed binary productions are enabled. It will write its results to the file test.out.
+	
+	\item Out of 742 German words aligned, 128 were aligned to $\epsilon$, about 17.25 percent Out of 756 English words aligned, 142 were aligned to $\epsilon$, about 18.78 percent.
+	
+	\item Out of 784 binary productions, 71 used the swap rather than in-order rule, about 9.05 percent.
+	
+	\item Out of 742 German words aligned, 205 were aligned to $\epsilon$, about 27.63 percent Out of 756 English words aligned, 219 were aligned to $\epsilon$, about 28.97 percent.
+\end{enumerate}
+\end{document}

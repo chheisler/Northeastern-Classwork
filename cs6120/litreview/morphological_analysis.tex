@@ -1,0 +1,258 @@
+\documentclass[12pt]{article}
+\title{Morphological Analysis and Generation}
+\author{Charles Heisler -- CS6120 -- 5/1/2015}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Many models for a range of natural language processing problems make the simplifying assumption of treating individual words as discrete tokens without internal structure. For relatively isolating languages where there are few morphemes per word, such as English, this simplification is not necessarily detrimental, as for any given lexical root the number of variants which can be derived by regular morphology is small.
+
+Many other languages, however, are synthetic and regularly create morphologically complex words from multiple affixes. As a result thousands or even \emph{millions} of variants of a single root can be derived through regular morphological processes in languages such as Finnish and Turkish (Oflazer, 1997). This means that an approach which relies on complete words as tokens is insufficient for many vital applications. A spellchecker for Turkish which used such an approach, for example, would likely encounter multiple perfectly spelled words which had been not observed in previous corpora (Sak, 2009).
+
+Shortcomings such as these have motivated copious research into the twin problems of \textbf{morphological analysis} and \textbf{morphological generation}. Morphological analysis involves the segmentation of complex words into their constituent morphemes. Morphological generation is the reverse task of building a word from a set of morphemes. In both cases there is an underlying \textbf{lexical} form and a \textbf{surface} form being transitioned between (Gasser, 2009). This literature review will seek to summarize some of the solutions which have been developed for these related problems and their historical relation to one another.
+
+\section{Finite State Transducer Cascades}
+An early approach to modeling the morphology of natural language was the formalism of \textbf{Generative Grammar} developed in the 1960s. In this representation, a morphological system is a set of rewrite rules which take as their input the underlying, lexical representation of a word and produce the surface form. While accurate, this formalism suffers from the deficiencies of being only generative and computationally expensive. As a result it has found little practical application in the task of morphological analysis in natural language processing (Koskenniemi 1984).
+
+A significant step towards overcoming these problems was made when Martin Kay and Ronald Kaplan at Xerox demonstrated that morphological rewrite rules can instead be modeled as finite state transducers (Gasser, 2009). A complete morphology in turn can be represented by cascading a series of transducers, one for each rewrite rule in the morphology. The result can then be compiled as a single, generative transducer. This transducer can also be inverted to create an analytical one, providing the bidirectionality missing from the bare rewrite rule representation (Koskenniemi 1984).
+
+\section{The Two-Level Model}
+Though an improvement on rewrite rules, Kay and Kaplan's cascade approach has limitations. While it does well for morphologically simple languages, for very morphologically complex languages the transducer built from the cascade of rule transducers may grow too large in size to be practical. To address these problems, Kimmo Koskenniemi developed the alternative approach of the \textbf{two-level model} (1984). Like Kay and Kaplan's model, Koskenniemi's contains a number of morphological rules representable as finite state transducers. But where the Kay-Kaplan model cascades finite state transducers between multiple levels of representation, in the two-level model the only levels of representation, both in principle and in practice, are the lexical and surface levels. Rather than successively cascading, rules are run in \emph{parallel} between the two of them.
+
+\subsection{Koskenniemi's Two-Level Model}
+Formally, two-levels rules are stated as lexical-surface pairs conditioned by surrounding lexical or surface segments. For example, the rule \textit{i:e} $\Leftrightarrow$ \_ \textit{I:} states that lexical \textit{i} is realized as surface \textit{e} preceding lexical \textit{I}. Likewise, the rule \textit{I:j} $\Leftrightarrow$ \textit{:V} \_ \textit{:V} denotes that lexical \textit{I} is realized as surface \textit{j} between surface \textit{V}. As a simplification these rules are restricted to one segment variations (Koskenniemi, 1984).
+
+In most practical implementations of Koskenniemi's formalism, the underlying lexicon is represented as a prefix tree with morphological information stored on the leaf nodes (Karttunen, 1992). The two-level rules themselves are finite state transducers which consume pairs of characters read in tandem from the lexical and surface forms. If, given the rule, the surface form is an accurate realization of the lexical form, the transducer will arrive at an accepting final state (Koskenniemi, 1984). While the rules themselves must be handwritten, algorithms exist to automatically compile them into the equivalent finite state transducers (Grimley-Evans, 1996).
+
+\subsection{Refining the Two-Level Model}
+Koskenniemi's two-level approach has been used successfully to model many languages with varying degrees of morphological complexity, including English, Finnish, Swedish, Russian, Swahili and Arabic (Karttunen, 1992). The naive implementation is not without drawbacks, however. Because it is very difficult to write a two-level rule for highly dissimilar lexical and surface forms, a strict two-level formalism encourages using lexical forms which closely resemble their surface realizations, even if this masks some deeper morphological alternation. This includes representing lexical forms as segments rather than morphological categories. For example, many two-level implementations will represent \textit{happier} as \textit{happy-er} and \textit{better} as simply \textit{better} at the lexical level. This hides the fact that both are comparative forms of adjectives, better represented as \textit{happy} +\textsc{comparative} and \textit{good} +\textsc{comparative} (Karttunen, 1992).
+
+To address these deficiencies, Lauri Karttunen, Ronald Kaplan and Annie Zaenen proposed a pair of simple modifications to Koskenniemi's two-level model. The first is that surface forms should always be mapped to their canonical dictionary forms at the lexical level, e.g. \textit{better} should be mapped to \textit{good}. The second is that morphological categories, such as +\textsc{comparative}, should be stored as part of the lexical form (1992). To overcome the obstacle of difficulty in writing rules for dissimilar lexical and surface forms like \textit{good} and \textit{better}, the constraint against cascading finite state transducers is relaxed in the model, permitting complex two-level rules to be built as the composition of simpler, easier to write intermediate rules. The result is a model in which short cascades of rules are run in parallel. This model occupies a middle ground between Kay and Kaplan's, where a single, long cascade is used, and Koskenniemi's, where single, non-cascaded rules are run in parallel.
+
+\subsection{Complexity}
+It has been shown that while two-level rules are efficient in practice, in theory they are NP-Hard. In particular, long-distance phenomenon such as vowel harmony are computationally expensive, and for a language with many such rules the approach would be infeasible. However, this has not arisen as an issue because such phenomenon are relatively uncommon in human language. No language is known to distinguish more than two simultaneous systems of vowel harmony and from a theoretical standpoint it seems unlikely to occur, since it would greatly limit the number of meaningful vowel contrasts that could be made (Koskenniemi, 1988).
+
+\section{Disambiguation}
+The two-level formalism described above and its implementations are deterministic, and in some cases may return multiple possible parses for a single word.  There are a number of reasons why such ambiguity arises. Distinct affixes may be realized identically in certain contexts, a root may be a prefix string of another root or two unrelated affixes may happen to be identical by coincidence (Oflazer, 1997). Whatever the cause, in some contexts disambiguation may be desirable or necessary. This section will examine the model for one approach to this problem.
+
+The model is composed of a set of constraint-based rules. Each one of these rules contains a set of feature constraints $C_1,\dots,C_n$. The possible rule $[[case:abl],[cat:postp,subcat:abl]]$ would match parses where the morphological feature $ablative$ is followed by a postposition which subcategorizes from the ablative form of a noun, for example. A constraint $C_i$ may be hierarchical, with deeper constraints nested within it. Each rule also contains an integer $V$ indicating the value of its votes (Oflazer, 1997).
+
+There are multiple ways in which the vote of a rule can be determined. It would be feasible to use a statistical approach modeled on corpora, but for their work Oflazer and T\"{u}r adopt a method based on the static properties of rules themselves. This method seeks to give higher votes to rules with high numbers of constraints or features in their constraints, or which contain nested constraints. Given a rule $R = [(C_1,\dots\,C_n),V]$, $V$ is equal to the sum of each constraint $C_i$'s contribution. The contribution of a constraint $C = [(f_1,v_1),\dots,(f_m,v_m)]$ is in turn determined by the contribution of each of its feature-value pairs $(f_i,v_i)$. If a given pair's feature $f_i$ or value $v_i$ is marked as \textbf{distinguished} it will contribute some value greater than $1$. If a feature $f_i$ refers to a nested constraint $C'$, then the pair will contribute the recursively calculated value of $C'$ multiplied by a set factor. All other feature-value pairs will simply contribute $1$ (Oflazer, 1997).
+
+Votes for competing, ambiguous forms are tallied by matching rules to sequences of tokens. A rule $R = [(C_1,\dots,C_n),V]$ is considered to match a sequence of tokens $w_i,\dots,w_{i+n-1}$ if every token $w_j$ in the sequence is subsumed by a matching constraint $C_{j-i+1}$. When such a match is found, all parses in it have their vote increased by the value of the rule's vote. After all matches have been found and votes tallied, parses with a number of votes greater than or equal to $v_l + m(v_h - v_l)$ are selected, where $v_l$ and $v_h$ are the votes of the lowest and highest scoring parses respectively, and $m$ is an adjustable parameter between $0$ and $1$. A value of $1$ for $m$ corresponds to selecting only the highest scoring parse (Oflazer, 1997).
+
+\section{Unsupervised Approaches}
+All of the models discussed so far are capable of accurately representing the morphological rules of natural languages, and can be implemented using finite state transducers which are reversible and computationally feasible. The two-level model in particular has been very successful. But while algorithms exist to compile the morphological rules for these systems into functioning transducers, the rules themselves must first be written by hand. This is time-consuming and requires an expert with a deep linguistic understanding of the target language (Dasgupta, 2007). As a result more recent research has focused on unsupervised methods for inducing the morphology of natural languages automatically and then using that knowledge to segment it.
+
+The majority of approaches to the unsupervised learning of morphology use statistical modeling and primarily differ in how they model the underlying lexicon of the language. Minimum description length, maximum likelihood and and expectation maximization approaches have all been used (Tepper, 2008). Trying to address such a vast swath of literature is well beyond the scope of this review, so only a few unsupervised methods will be touched on.
+
+\subsection{Minimum Description Length}
+One well researched approach is \textbf{minimum description length}. Given a corpus for a language, these models seek to automatically induce an optimally compact model of the language's morphology and, given that model, the corpus. A frequently cited minimum description length model is that of John Goldsmith (2001). The model he adopts defines compactness as the number of bits necessary to store the model with the corpus and is composed of three lists: a list of stems $T$, a list of suffixes $F$ and a list of \textbf{signatures} $\Sigma$. A signature is composed of a list of pointers to stems and a list of pointers to all suffixes that these stems attach to. These three lists and their members determine the size of the model.
+
+Given a list of length $N$, $\log_2N$ bits are necessary to store it. As such, for each list $L$ in the model $\log_2 \vert L \vert$ bits are required for it. The size of each stem and suffix is also straightforward to calculate. Given an alphabet $A$ for the target language, each character will require $\log_2 \vert A \vert$ bits to encode. This means that each stem $t \in T$ will require $length(t) \log_2 \vert A \vert$ bits and each suffix $f \in F$ will require $length(f) \log_2 \vert A \vert$. The size of a pointer to a stem, suffix or signature $s$ is calculated as $-\log_2P(s)$, where $P(s)$ is defined simply its empirical frequency in the corpus. The size of the corpus itself is given by the formula:
+
+$$\sum_{w=t+f} [w] (\log_2 p(\sigma(w)) + \log_2 p(t) + \log_2 p (f \vert \sigma(w))) $$
+
+\noindent Here $[w]$ denotes the number of times $w$ occurs in the corpus and $\sigma(w)$ is the signature of word $w$ (Goldsmith 2001).
+
+Once an optimal model has been computed, it can be used to segment words. This is done using an expectation maximization approach. Each word $w$ of length $l$ is segmented after the $i$th letter for $1 \leq i \leq l$, and each of these segmentations is assigned a probability mass of $\frac{[w]}{l \vert W \vert}$. This probability massed is summed over the set of possible stems and suffixes and over successive iterations each of the cuts is weighted by its probability (Goldsmith, 2001).
+
+This method on its own will prefer always finding a stem or suffix consisting of a single character and must be refined by a heuristic. There are two feasible heuristics by which can accomplish this. The first is to consider for each word $w$ of length $l$ all possible segmentations of it into a stem $w_{1,i}$ and suffix $w_{i+1,l}$ for $1 \leq i \leq l$. Each such segmentation is assigned a probability by a function H:
+
+$$ H(w_{1,i} + w_{i+1,l}) = \frac{e^{-H(w_{1,i}+w_{i+1,l})}}{\sum_{i=1}^{n-1} H(w_{1,i} + w_{i+1,l})}$$
+
+\noindent The highest scoring parse is recorded for each word, and the process is repeated until the optimal parse does not increase for any word. This usually requires roughly five iterations (Goldsmith, 2001).
+
+The second heuristic typically converges more quickly. It begins by making an assumption that all words terminate in a special end-of-word character \#. Next, given a maximum expected suffix length $M$, the occurrences of all 2 to $M+1$ letter $n$-grams that appear as proper, word-final substrings in the corpus are counted. The length of these substrings includes the special character \#. Using the counts for each $n$-gram, their likelihoods are calculated according to the following formula:
+
+$$\frac{[n_1 \dots n_k]}{K} \log_2 \frac{[n_1 \dots n_k]}{[n_1] \dots [n_k]}$$
+
+\noindent Here $K$ denotes total count of $k$-grams. The best candidates as measured by this heuristic are selected and used to segment the words of the corpus (Goldsmith, 2001).
+
+\subsection{Multilingual Learning}
+One novel solution to some of the challenges of unsupervised learning is to induce the morphology of multiple languages simultaneously using a corpus of short, parallel phrases. This approach takes advantage of the fact that a morpheme which is ambiguous in one language may have a corresponding morpheme in the other language which is not. The unambiguous morpheme in the second language can then be used to disambiguate the morpheme in the first. If the two languages being analyzed are related, then identifiable cognates between the two can also be used to disambiguate morpheme boundaries (Snyder, 2008).
+
+This parallel learning method uses a hierarchical Bayesian model which operates on parallel texts for two languages $\mathcal{E}$ and $\mathcal{F}$. The goal is to identify stable and reoccurring patterns indicative of morphemes within words. When possible, corresponding morpheme pairs in the two languages are merged into a single \textbf{abstract morpheme}. The core components of the model are probability distributions $A$ over bilingual abstract morphemes, $E$ over unpaired morphemes in language $\mathcal{E}$ and $F$ over unpaired morphemes in language $\mathcal{F}$. Each of these distributions is drawn from a separate Dirichlet process (Snyder, 2008).
+
+After $A$, $E$ and $F$ are drawn, the parallel corpus is modeled as independent draws from phrase-pair generation model for each entry. These draws select values $m$, $n$ and $k$ corresponding to the number of entries to be drawn from the distributions $E$, $F$ and $A$ respectively. The morphemes drawn are then ordered and fused. The model used for this ordering and fusion step is a uniform distribution over all possible orderings and fusions. This method of drawing, ordering and fusing not only induces a morphemic segmentation for each language, but an alignment between the two as well, as every morpheme drawn is by construction either a stray morpheme or a paired abstract morpheme (Snyder, 2008).
+
+\subsection{Common Errors}
+Unsupervised systems remove the burden of having to write morphological rules by hand, but suffer from pitfalls of their own. Three particularly widespread ones are \textbf{compound affixes}, \textbf{false attachment} and a failure to account for allomorphy or allography in segmentations. Some unsupervised systems for inducing morphology have been developed with addressing these issues in mind. One such method will be reviewed in this section.
+
+\subsubsection{Compound Suffixes}
+A compound affix occurs when two or more adjacent affixes are incorrectly parsed as a single affix because they frequently co-occur. For example, the English agentive suffix \textit{-er} and the plural suffix \textit{-s} often appear together in words like \textit{walkers}. Many unsupervised methods will incorrectly induce \textit{-ers} as a suffix and segment \textit{walkers} as \textit{walk-ers} instead of \textit{walk-er-s} (Dasgupta, 2007).
+
+Dasgupta and Ng propose hedging against this sort of error with a simple observation: if a sequence $xy$ is a compound suffix and it attaches to a word $w$, then the sequence $x$ should attach to $w$ as well. In other words, if $xy$ and $x$ attach to sufficiently \emph{similar} words then it is reasonable to hypothesize that $xy$ may be a compound suffix. Similarity is calculated as $\vert W' \vert$ divided by $\vert W \vert$, where $W'$ is the set of distinct words that attach to both $xy$ and $x$ and $W$ is the set of distinct words that only attach to $xy$, while the similarity threshold at which a sequence should be considered a compound suffix is a configurable parameter of the model. Similarly, if $xy$ is a prefix, whether it attaches to similar words as $y$ can be used to decide whether it is a compound prefix (Dasgupta, 2007).
+
+\subsubsection{False Attachment}
+False attachment is the opposite problem of compound affixation. It occurs when a single morpheme is incorrectly parsed as two or more. For example, some methods will erroneously split \textit{candidate} into \textit{candid-ate}. Here again Dasgupta and Ng make another simple observation: if a word $w$ combines with an affix $x$, then $w$ should combine with other affixes which are morphologically similar to $x$. In the case of the parse \textit{candid-ate}, if this were correction one would expect to also see forms like \textit{*candidated} or \textit{*candidation}, but neither of these occur (Dasgupta, 2007).
+
+Given an affix $x$, its morphological similarity to other affixes can be found using the set of words $W_x$ that $x$ attaches to and the set of suffixes $S_x$ that attach to all words in $W_x$, excluding $x$ itself. For each affix $y$ in $S_x$, its similarity can be measured as $\frac{n}{n_x}\frac{n}{n_y}$ where $n_x$ is number of words that combine with $x$, $n_y$ is number combining with $y$ and $n$ is the number combining with both. The sum of $f_i w_i$ over all $x_i$ in the top $K$ most similar affixes $x_1,\dots,x_K$ is then calculated. The variable $f_i$ is a boolean function which returns $1$ if $w$ combines with affix $x_i$, $0$ otherwise, and $w_i$ is the scaled similarity of $x_i$ to $x$. If the sum is greater than some threshold $t$, then $x$ is considered to be an affix and not a false attachment (Dasgupta, 2007).
+
+Another method for detecting false attachment is \textbf{relative frequency}. This approach is based on the hypothesis that if a word $w$ is formed by attaching the affix $x$ to a root word $r$, then $r$ should appear more frequently in the corpus than $w$. This heuristic, as it turns out, is imperfect and overly strict in its purest form. Many languages obligatorily mark various grammatical categories on root words such that occurrences of $w$ outweigh occurrences of $r$. This can be adjusted for by having as a threshold a ratio between occurrences of $w$ and $r$ which is greater than $1$. Once a threshold is picked, each word $w$ can be segmented into a root $r$ and an affix $x$ and the ratio between occurrences of $w$ and $r$ found. If the result is higher than the threshold, the segmentation is considered a false attachment (Dasgupta, 2007).
+
+\section{Semi-Supervised Learning}
+Supervised approaches like the two-level model are capable of providing great accuracy at the cost of requiring extensive, handwritten rules. Unsupervised methods allow morphological parsing in the absence of such rules, but do poor job of capturing key phenomenon such as allomorphy (Tepper, 2008) and are frequently biased towards certain types of languages (Kohonen, 2010). As the previous section illustrated some have attempted to overcome these deficiencies of the unsupervised framework while remaining within it. This section will review a few hybrid approaches which seek to address the shortcomings of unsupervised methods by introducing supervised data.
+
+\subsection{Fixed Analyses}
+An obvious approach to semi-supervised learning for morphology is to modify an unsupervised method by fixing the analyses for a subset of words in advance using human-written parses. This proposition is not, however, as straightforward as it initially appears. Unsupervised systems were not designed with such pre-segmented data in mind, and so it is possible for it to be easily overwhelmed by more proliferate unsupervised data or priors of the model. This can be compensated for by introducing a pair of new parameters, $\alpha$ and $\beta$ to the unsupervised model. These represent weights on the unsupervised and supervised data respectively, and can be optimized using held out data. The resulting algorithm can then be used to segment the text using a modified Viterbi algorithm (Kohonen, 2010).
+
+\subsection{Context-Sensitive Rewrite Rules}
+An alternative hybrid method incorporates handwritten, ordered, context-sensitive rules into previously unsupervised methods to try and better account for allomorphy. These rules are identical in form to those used in the Kay-Kaplan and two-level models, and the method can be seen as a way to leverage some of the power of these models without assuming the full burden of their costs. The rules chosen are used to estimate the transition and emission probabilities of a hidden Markov model which emits underlying, lexical forms and which can be used to better segment the text (Tepper, 2008).
+
+The method begins by first segmenting the text with a wholly unsupervised method to produce an initial parse of morpheme and tag sequences. The set of handwritten rules is then used to propose allomorphic substitutions, insertions and deletions for each segmentation, the result of one rule's application being fed to the next in a cascade. Transmission probabilities $P(t_i \vert t_{i-1})$ and emission probabilities $P(u_i|t_i)$ for the hidden Markov model are next estimated using maximum likelihood. $P(u_i|t_i)$ in particular is taken as the sum of $P(u_i,s|t_i)$, the probability that the lexical form $u_i$ is realized as $s$ in the context of $t_i$, for all surface allomorphs $s$ of $u_i$ (Tepper, 2008).
+
+Once estimated, the model is next used to reparse each word $w$ into a new morpheme sequence $u$ and a new tag sequence $t$. To do so, the probability $P(w,u,t)=P(w \vert u,t)P(u \vert t)P(t)$ is maximized using a modified Viterbi algorithm. The formula can be simplified by making the reasonable assumption that each unique, underlying sequence of lexical morphemes maps to a single, unique word at the surface level. This reduces $P(w|u,t)$ to simply $1$ and the formula itself to $P(u \vert t)P(t)$. This resegmentation calculated using rewrite rules achieves a gain of 8.2\% over the baseline of the original, unsupervised model when used for English (Tepper, 2008). 
+
+\section{Open Questions}
+Thus far the various methods reviewed have by and large made the assumption that morphology is solely concatenative, containing only of prefixes and suffixes. This is true for many languages and serves to simplify the models. But there are also numerous attested examples of non-concatenative morphology in multiple natural languages, including English, such as circumfixation, infixation and ablaut (Gasser, 2009). Research in this area does exist, especially for the Semitic languages. These languages are known for their so-called "template morphologies" where patterns of vowels are inserted inside of consonant roots. A number of methods have been proposed for addressing this system, including transducers which consume separate tapes for the consonant root and vowel pattern and permitting transducers to store and retrieve state from a set of registers (Gasser, 2009), but nevertheless this sort of template morphology and other non-concatenative phenomenon appear to receive relatively less attention and have less well-developed parsing models.
+
+Another assumption that all methods reviewed made is that morphology is a flat sequence of tokens without structure. This glosses over the fact that in highly synthetic languages, where single words may correspond to a sentence or phrase in English, the morphemes within those words can be analyzed as having a branching, internal structure like their multiword English parallels. None of the literature reviewed made mention of segementing methods which also attempt to induce such a structure or of using methods for building parse trees of sentences to build parse trees from segmented morphemes.
+
+It is clear that methods for morphological analysis and generation have come quite a way from the first generative grammars of the 1960s. For both unsupervised and supervised methods incremental improvements have been made as new methods have sought to correct the errors of their predecessors, and semi-supervised methods have attempted to fuse the best of these findings. However, among these three families none stand out as clearly superior and, as the open questions mentioned above show, regardless of method many challenges remain.
+
+\begin{thebibliography}{9}
+
+\bibitem{dasgupta07}
+Dasgupta, Sajib \& Ng, Vincent.
+"High-Performance, Language-Independent Morphological Segmentation."
+\textit{Human Language Technologies 2007: The Conference of the North American Chapter of the Association for Computational Linguistics; Proceedings of the Main Conference},
+Rochester, NY.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 2007.
+155-63.
+ACL Anthology.
+Web.
+5 Apr. 2015.
+
+\bibitem{gasser09}
+Gasser, Michael.
+"Semitic Morphological Analysis and Generation Using Finite State Transducers with Feature Structures."
+\textit{Proceedings of the 12th Conference of the European Chapter of the Association for Computational Linguistics},
+Athens, Greece.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 2009.
+309-17.
+ACL Anthology.
+Web.
+6 Apr. 2015.
+
+\bibitem{goldsmith01}
+Goldsmith, John.
+"Unsupervised Learning of the Morphology of a Natural Language."
+\textit{Computational Linguistics} 27.2 (2001):
+153-98.
+ACL Anthology.
+Web.
+19 Apr. 2015.
+
+\bibitem{grimley-evans96}
+Grimley-Evans, Edmund \& Kiraz, George Anton \& Pulman, Stephen G.
+"Compiling a Partition-based Two-level Formalism."
+\textit{Proceedings of the 16th Conference on Computational Linguistics - Volume 1},
+Copenhagen, Denmark.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 1996.
+454-9.
+ACL Anthology.
+Web.
+20 Mar. 2015.
+
+\bibitem{karttunen92}
+Karttunen, Lauri, Kaplan, Ronald M. \& Zaenen, Annie.
+"Two-Level Morphology with Composition."
+\textit{Proceedings of the 14th Conference on Computational Linguistics -- Volume 1},
+Nantes, France.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 1992.
+141-8.
+ACL Anthology.
+Web.
+21 Apr. 2015.
+
+\bibitem{kohonen10}
+Kohonen, Oskar \& Virpioja, Sami \& Lagus, Krista.
+"Semi-Supervised Learning of Concatenative Morphology."
+\textit{Proceedings of the 11th Meeting of the ACL Special Interest Group on Computational Morphology and Phonology},
+Uppsala, Sweden.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 2010.
+78-86.
+ACL Anthology.
+Web.
+13 Apr. 2015.
+
+\bibitem{koskenniemi84}
+Koskenniemi, Kimmo.
+"A General Computational Model for Word-Form Recognition and Production."
+\textit{Proceedings of the 10th International Conference on Computational Linguistics},
+Stanford, California.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 1984.
+178-81.
+ACL Anthology.
+Web.
+14 Mar. 2015.
+
+\bibitem{koskenniemi88}
+Koskenniemi, Kimmo \& Church, Kenneth Ward.
+"Complexity, Two-Level Morphology and Finnish."
+\textit{Proceedings of the 12th Conference on Computational Linguistics -- Volume 1},
+Budapest, Hungary.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 1988.
+335-40.
+ACL Anthology.
+Web.
+13 Mar. 2015.
+
+\bibitem{oflazer97}
+Oflazer, Kemal \& T{\"u}r, G{\"o}rkhan.
+"Morphological Disambiguation by Voting Constraints."
+\textit{Proceedings of the Eighth Conference on European Chapter of the Association for Computational Linguistics},
+Madrid, Spain.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 1997.
+222-9.
+ACL Anthology.
+Web.
+9 Apr. 2015.
+
+\bibitem{sak09}
+Sak, Ha\c{s}im \& G\"{u}ng\"{o}r, Tunga \& Sara\c{c}lar, Murat
+"A Stochastic Finite-State Morphological Parser for Turkish."
+\textit{Proceedings of the ACL-IJCNLP 2009 Conference Short Papers},
+Suntec, Singapore.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 2009.
+273-6.
+ACL Anthology.
+Web.
+21 Apr. 2015.
+
+\bibitem{snyder10}
+Snyder, Benjamin \& Barzilay, Regina.
+\textit{Unsupervised Multilingual Learning for Morphological Segmentation}.
+Diss.
+Massachusetts Institute of Technology, 2010.
+Cambridge, MA, USA: UML, 2010.
+ACL Anthology.
+Web.
+11 Apr. 2015.
+
+\bibitem{tepper08}
+Tepper, Michael \& Xia, Fei.
+"A Hybrid Approach to the Induction of Underlying Morphology".
+\textit{International Joint Conference on Natural Language Processing}.
+Stroudsburg, PA, USA:
+Association for Computational Linguistics, 2008.
+ACL Anthology.
+Web.
+12 Apr. 2015.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,78 @@
+#!/usr/bin/python
+
+from random import choice
+from sys import argv
+
+class Generator(object):
+	# class constants
+	COMMENT = '#'
+	WEIGHT_INDEX = 0
+	NON_TERM_INDEX = 1
+	START = 'START'
+	
+	def __init__(self, filename):
+		"""Builds a generator from a given grammar file."""
+		self.non_terms = {}
+		
+		# open and parse the grammar file
+		grammar = open(filename, 'r')
+		for line in grammar:
+			# if a line is a comment skip it
+			if len(line) == 0 or line[0] == self.COMMENT:
+				continue
+				
+			# else split it into tokens on whitespace
+			tokens = line.split()
+			if len(tokens) == 0:
+				continue
+			weight = tokens[self.WEIGHT_INDEX]
+			non_term = tokens[self.NON_TERM_INDEX]
+			output = tokens[self.NON_TERM_INDEX + 1:]
+			
+			# add a rule to the generator for the line
+			try:
+				non_term = self.non_terms[non_term]
+			except KeyError:
+				self.non_terms[non_term] = non_term = []
+			non_term.append(Rule(weight, output))
+
+	def generate(self):
+		"""Generates a random sentence from the generator's rules"""
+		sentence = []
+		stack = [self.START]
+		
+		while len(stack) > 0:
+			# if the next symbol is final add it to the sentence
+			symbol = stack.pop()
+			try:
+				non_term = self.non_terms[symbol]
+			except KeyError:
+				sentence.append(symbol)
+				continue
+				
+			# pick a random rule and push its output onto the stack
+			outputs = [
+				rule.output
+				for rule in non_term
+				for i in range(rule.weight)
+			]
+			output = choice(outputs)
+			stack += [symbol for symbol in reversed(output)]
+			
+		# join the outputted symbols into a sentence and return it
+		return ' '.join(sentence)
+		
+class Rule(object):
+	def __init__(self, weight, output):
+		self.weight = int(weight)
+		self.output = output
+		
+def main():
+	grammar = argv[1]
+	count = int(argv[2])
+	generator = Generator(grammar)
+	for i in range(count):
+		print generator.generate()
+		
+if __name__ == '__main__':
+	main()
