@@ -1,0 +1,2 @@
+1. Place the data file 'segment.arff' into the unpacked directory.
+2. Run 'python kmeans.py' to run the code for the fifth problem

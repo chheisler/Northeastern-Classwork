@@ -26,6 +26,7 @@ layouts/
 *.lock
 *.~lock*
 *.log
+logs/
 *.MF
 *.nfs*
 *.o
@@ -37,6 +38,7 @@ output/
 outputs/
 *.pdf
 *.png
+project/
 *.properties
 *.pyc
 *.REMOTE.*
@@ -45,6 +47,7 @@ outputs/
 *.swp
 syslogs/
 *.tar
+target/
 test_cases/
 *.txt
 *.zip

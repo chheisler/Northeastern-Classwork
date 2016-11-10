@@ -1,0 +1,8 @@
+Code for PageRank can be found in PageRank/
+
+Code can be built and run with 'make run'. Each makefile defines the variables
+MASTER, PARALLELISM, PERSIST, INPUT and OUTPUT which are passed as arguments to
+the run and can be altered if necessary. MASTER defines the MASTER for the
+Spark context, PARALLELISM defines the number of partitions for the job and
+PERSIST defines whether or not the RDD's of page links and ranks should be
+persisted.

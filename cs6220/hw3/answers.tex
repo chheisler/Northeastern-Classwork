@@ -1,0 +1,470 @@
+\documentclass[12pt]{article}
+\title{Homework 3}
+\author{Charles Heisler -- CS6220 -- 11/7/2016}
+\date{}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{xfrac}
+\usepackage{enumitem}
+\usepackage{graphicx}
+
+\begin{document}
+	\maketitle
+
+	\section*{1.}
+	\subsection*{(a)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		m_1 &= \frac{1}{\lvert C_1 \rvert}\sum_{x_i \in C_1}x_i \\
+		&= \frac{\left(5,5\right)+\left(8,7\right)+\left(7,3\right)}{3} \\
+		&= \mathbf{\left(6\sfrac{2}{3},5\right)}
+	\end{align*}
+	\endgroup
+
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		m_2 &= \frac{1}{\lvert C_2 \rvert}\sum_{x_i \in C_2}x_i \\
+		&= \frac{\left(6,5\right)+\left(4,4\right)+\left(9,2\right)+\left(3,5\right)+\left(8,4\right)}{5} \\
+		&= \mathbf{\left(6,4\right)}
+	\end{align*}
+	\endgroup
+
+	\subsection*{(b)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		m &= \frac{1}{\lvert C_1 \cup C_2 \rvert}\sum_{x_i \in C_1 \cup C_2}x_i \\
+		&= \frac{\left(5,5\right)+\left(8,7\right)+\left(7,3\right)+\left(6,5\right)+\left(4,4\right)+\left(9,2\right)+\left(3,5\right)+\left(8,4\right)}{8} \\
+		&= \mathbf{\left(6\sfrac{1}{4},4\sfrac{3}{8}\right)}
+	\end{align*}
+	\endgroup
+
+	\subsection*{(c)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		S_1 &= \sum_{x_i \in C_1} \left(c_i-m_1\right)\left(x_i-m_1\right)^\textrm{T} \\
+		&= \begin{bmatrix}
+			2\sfrac{7}{9} & 0 \\
+			0 & 0
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			1.\sfrac{7}{9} & 2\sfrac{2}{3} \\
+			2.\sfrac{2}{3} & 4
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			sfrac{1}{9} & -\sfrac{2}{3} \\
+			-\sfrac{2}{3} & 4
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+			\mathbf{4.\sfrac{2}{3}} & \mathbf{2} \\
+			\mathbf{2} & \mathbf{8}
+		\end{bmatrix}
+	\end{align*}
+	\endgroup
+
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		S_2 &= \sum_{x_i \in C_2}\left(x_i-m_2\right)\left(x_i-m_2\right)^\textrm{T} \\
+		&= \begin{bmatrix}
+			0 & 0 \\
+			0 & 1
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			4 & 0 \\
+			0 & 0
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			9 & -6 \\
+			-6 & 4
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			9 & -3 \\
+			-3 & 1
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			4 & 0 \\
+			0 & 0
+		\end{bmatrix} \\
+		& = \begin{bmatrix}
+			\mathbf{26} & \mathbf{-9} \\
+			\mathbf{-9} & \mathbf{6}
+		\end{bmatrix}
+	\end{align*}
+	\endgroup
+
+	\subsection*{(d)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		S_W &= S_1 + S_2 \\
+		&= \begin{bmatrix}
+			4\sfrac{2}{3} & 2 \\
+			2 & 8
+		\end{bmatrix}
+		+ \begin{bmatrix}
+			26 & -9 \\
+			-9 & 6
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+			\mathbf{30\sfrac{2}{3}} & \mathbf{-7} \\
+			\mathbf{-7} & \mathbf{14}
+		\end{bmatrix}
+	\end{align*}
+
+	\subsection*{(e)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		S_B &= \lvert C_1 \rvert \left(m_1-m\right)\left(m_1-m\right)^\textrm{T}
+		+ \lvert C_2 \rvert \left(m_2-m\right)\left(m_2-m\right)^\textrm{T} \\
+		&= 3 \begin{bmatrix}
+			\sfrac{25}{144} & \sfrac{25}{96} \\
+			\sfrac{25}{96} & \sfrac{25}{64}
+		\end{bmatrix}
+		+ 5 \begin{bmatrix}
+			\sfrac{1}{16} & \sfrac{15}{32} \\
+			\sfrac{15}{32} & \sfrac{45}{64}
+		\end{bmatrix} \\
+		&= \begin{bmatrix}
+			\mathbf{\sfrac{5}{6}} & \mathbf{1\sfrac{1}{4}} \\
+			\mathbf{1\sfrac{1}{4}} & \mathbf{1\sfrac{7}{8}}
+		\end{bmatrix}
+ 	\end{align*}
+	\endgroup
+
+	\subsection*{(f)}
+	\begingroup
+	\addtolength{\jot}{1em}
+	\begin{align*}
+		\frac{\textrm{tr}\left(S_B\right)}{\textrm{tr}\left(S_W\right)}
+		= \frac{\sfrac{5}{6}+1\sfrac{7}{8}}{30\sfrac{2}{3}+14}
+		= \mathbf{\sfrac{65}{1072}}
+	\end{align*}
+	\endgroup
+
+	\section*{2.}
+	\subsection*{(a)}
+	There is one cluster ${(0,1),(5,2),(2,3),(6,1),(3,4),(6,3),(7,2),(1,2)}$.
+
+	\subsection*{(b)}
+	Every pair of points within the cluster is density-connected.
+
+	\subsection*{(c)}
+	The points $(10,2)$, $(0,6)$ and $(0.7)$ are noise.
+
+	\section*{3.}
+	Let, $x_1 = \textrm{HHTT}$ $x_2 = \textrm{HHHH}$ $x_3 = \textrm{TTTT}$
+	
+	\subsection*{Iteration 1.}
+
+	\subsubsection*{E-Step.}
+
+	\begin{align*}
+		\gamma_{1,A} &\propto p\left(x_1 \vert A\right) p\left(A\right)
+		= \mu_A^2 \left(1-\mu_A \right)^2 \pi
+		= 0.55^2 \cdot \left(1-0.55\right)^2 \cdot 0.6
+		\approx 0.036754 \\
+		\gamma_{2,A} &\propto p\left(x_2 \vert A\right) p\left(A\right)
+		= \mu_A^4 \left(1-\mu_A\right)^0 \pi
+		= 0.55^4 \cdot \left(1-0.55\right)^0 \cdot 0.6
+		\approx 0.054904 \\
+		\gamma_{3,A} &\propto p\left(x_3 \vert A\right) p\left(A\right)
+		= \mu_A^0 \left(1-\mu_A\right)^4 \pi
+		= 0.55^0 \cdot \left(1-0.55\right)^4 \cdot 0.6
+		\approx 0.024604
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &\propto p\left(x_1 \vert B\right) p\left(B\right)
+		= \mu_B^2 \left(1-\mu_B \right)^2 \left(1-\pi\right)
+		= 0.45^2 \cdot \left(1-0.45\right)^2 \cdot \left(1-0.6\right)
+		\approx 0.024503 \\
+		\gamma_{2,B} &\propto p\left(x_2 \vert B\right) p\left(B\right)
+		= \mu_B^4 \left(1-\mu_B\right)^0 \left(1-\pi\right)
+		= 0.45^4 \cdot \left(1-0.45\right)^0 \cdot \left(1-0.6\right)
+		\approx 0.016403 \\
+		\gamma_{3,B} &\propto p\left(x_3 \vert B\right) p\left(B\right)
+		= \mu_B^0 \left(1-\mu_B\right)^4 \left(1-\pi\right)
+		= 0.45^0 \cdot \left(1-0.45\right)^4 \cdot \left(1-0.6\right)
+		\approx 0.036603
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,A} &= \frac{p\left(x_1 \vert A\right) p\left(A\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.036754}{0.036754+0.024503} = 0.6 \\
+		\gamma_{2,A} &= \frac{p\left(x_2 \vert A\right) p\left(A\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.054904}{0.054904+0.016403} \approx 0.769971 \\
+		\gamma_{3,A} &= \frac{p\left(x_3 \vert A\right) p\left(A\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.024604}{0.024604+0.036603} \approx 0.401981
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &= \frac{p\left(x_1 \vert B\right) p\left(B\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.024503}{0.036754+0.024503} = 0.4 \\
+		\gamma_{2,B} &= \frac{p\left(x_2 \vert B\right) p\left(B\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.016403}{0.054904+0.016403} \approx 0.230029 \\
+		\gamma_{3,B} &= \frac{p\left(x_3 \vert B\right) p\left(B\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.036603}{0.024604+0.036603} \approx 0.598019
+	\end{align*}
+
+	\subsubsection*{M-Step.}
+	
+	\begin{align*}
+		\mu_A &= \frac{0.5\gamma_{1,A}+1\gamma_{2,A}+0\gamma_{3,A}}{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}
+		\approx \frac{0.5 \cdot 0.6+1\cdot 0.769971+0\cdot 0.401981}{0.6+0.769971+0.401981} \approx 0.603837 \\
+		\mu_B &= \frac{0.5\gamma_{1,B}+1\gamma_{2,B}+0\gamma_{3,B}}{\gamma_{1,B}+\gamma_{2,B}+\gamma_{3,B}}
+		\approx \frac{0.5 \cdot 0.4 + 1 \cdot 0.230029 + 0 \cdot 0.598019}{0.4 + 0.230029 + 0.598019} \approx 0.350173 \\
+		\pi &= \frac{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}{3} \approx \frac{0.6+0.769971+0.401981}{3} \approx 0.590651
+	\end{align*}
+
+	\subsection*{Iteration 2.}
+
+	\subsubsection*{E-Step.}
+
+	\begin{align*}
+		\gamma_{1,A} &\propto p\left(x_1 \vert A\right) p\left(A\right)
+		= \mu_A^2 \left(1-\mu_A \right)^2 \pi
+		\approx 0.603837^2 \cdot \left(1-0.603837\right)^2 \cdot 0.590651
+		\approx 0.033800 \\
+		\gamma_{2,A} &\propto p\left(x_2 \vert A\right) p\left(A\right)
+		= \mu_A^4 \left(1-\mu_A\right)^0 \pi
+		\approx 0.603837^4 \cdot \left(1-0.603837\right)^0 \cdot 0.590651
+		\approx 0.078525 \\
+		\gamma_{3,A} &\propto p\left(x_3 \vert A\right) p\left(A\right)
+		= \mu_A^0 \left(1-\mu_A\right)^4 \pi
+		\approx 0.603837^0 \cdot \left(1-0.603837\right)^4 \cdot 0.590651
+		\approx 0.14549
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &\propto p\left(x_1 \vert B\right) p\left(B\right)
+		= \mu_B^2 \left(1-\mu_B \right)^2 \left(1-\pi\right)
+		\approx 0.350173^2 \cdot \left(1-0.350173\right)^2 \cdot \left(1-0.590651\right)
+		\approx 0.021196 \\
+		\gamma_{2,B} &\propto p\left(x_2 \vert B\right) p\left(B\right)
+		= \mu_B^4 \left(1-\mu_B\right)^0 \left(1-\pi\right)
+		\approx 0.350173^4 \cdot \left(1-0.350173\right)^0 \cdot \left(1-0.590651\right)
+		\approx 0.006155 \\
+		\gamma_{3,B} &\propto p\left(x_3 \vert B\right) p\left(B\right)
+		= \mu_B^0 \left(1-\mu_B\right)^4 \left(1-\pi\right)
+		\approx 0.350173^0 \cdot \left(1-0.350173\right)^4 \cdot \left(1-0.590651\right)
+		\approx 0.072994
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,A} &= \frac{p\left(x_1 \vert A\right) p\left(A\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.033800}{0.033800+0.021196} \approx 0.614591 \\
+		\gamma_{2,A} &= \frac{p\left(x_2 \vert A\right) p\left(A\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.078525}{0.078525+0.006155} \approx 0.927315 \\
+		\gamma_{3,A} &= \frac{p\left(x_3 \vert A\right) p\left(A\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.14549}{0.14549+0.072993} \approx 0.166191
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &= \frac{p\left(x_1 \vert B\right) p\left(B\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.021196}{0.033800+0.021196} \approx 0.385409 \\
+		\gamma_{2,B} &= \frac{p\left(x_2 \vert B\right) p\left(A\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.006155}{0.078525+0.006155} \approx 0.072685 \\
+		\gamma_{3,B} &= \frac{p\left(x_3 \vert B\right) p\left(A\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.072993}{0.14549+0.072993} \approx 0.833809
+	\end{align*}
+
+	\subsubsection*{M-Step.}
+
+	\begin{align*}
+		\mu_A &= \frac{0.5\gamma_{1,A}+1\gamma_{2,A}+0\gamma_{3,A}}{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}
+		\approx \frac{0.5 \cdot 0.614591+1\cdot 0.927315+0\cdot 0.166191}{0.614591+0.927315+0.166191} \approx 0.722799 \\
+		\mu_B &= \frac{0.5\gamma_{1,B}+1\gamma_{2,B}+0\gamma_{3,B}}{\gamma_{1,B}+\gamma_{2,B}+\gamma_{3,B}}
+		\approx \frac{0.5 \cdot 0.385409 + 1 \cdot 0.072685 + 0 \cdot 0.833809}{0.385409 + 0.072685 + 0.833809} \approx 0.205425 \\
+		\pi &= \frac{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}{3}\approx\frac{0.614591+0.927315+0.166191}{3}\approx 0.569366
+	\end{align*}
+
+	\subsection*{Iteration 3.}
+
+	\subsubsection*{E-Step.}
+
+	\begin{align*}
+		\gamma_{1,A} &\propto p\left(x_1 \vert A\right) p\left(A\right)
+		= \mu_A^2 \left(1-\mu_A \right)^2 \pi
+		\approx 0.722799^2 \cdot \left(1-0.722799\right)^2 \cdot 0.569366
+		\approx 0.022857 \\
+		\gamma_{2,A} &\propto p\left(x_2 \vert A\right) p\left(A\right)
+		= \mu_A^4 \left(1-\mu_A\right)^0 \pi
+		= 0.722799^4 \cdot \left(1-0.722799\right)^0 \cdot 0.569366
+		\approx 0.155404 \\
+		\gamma_{3,A} &\propto p\left(x_3 \vert A\right) p\left(A\right)
+		= \mu_A^0 \left(1-\mu_A\right)^4 \pi
+		\approx 0.722799^0 \cdot \left(1-0.722799\right)^4 \cdot 0.569366
+		\approx 0.003361
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &\propto p\left(x_1 \vert B\right) p\left(B\right)
+		= \mu_B^2 \left(1-\mu_B \right)^2 \left(1-\pi\right)
+		\approx 0.205425^2 \cdot \left(1-0.205425\right)^2 \cdot \left(1-0.569366\right)
+		\approx 0.011473 \\
+		\gamma_{2,B} &\propto p\left(x_2 \vert B\right) p\left(B\right)
+		= \mu_B^4 \left(1-\mu_B\right)^0 \left(1-\pi\right)
+		\approx 0.205425^4 \cdot \left(1-0.205425\right)^0 \cdot \left(1-0.569366\right)
+		\approx 0.000767 \\
+		\gamma_{3,B} &\propto p\left(x_3 \vert B\right) p\left(B\right)
+		= \mu_B^0 \left(1-\mu_B\right)^4 \left(1-\pi\right)
+		\approx 0.205425^0 \cdot \left(1-0.205425\right)^4 \cdot \left(1-0.569366\right)
+		\approx 0.171652
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,A} &= \frac{p\left(x_1 \vert A\right) p\left(A\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.022857}{0.022857+0.011473} \approx 0.665797 \\
+		\gamma_{2,A} &= \frac{p\left(x_2 \vert A\right) p\left(A\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.155404}{0.155404+0.000767} \approx 0.995090 \\
+		\gamma_{3,A} &= \frac{p\left(x_3 \vert A\right) p\left(A\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.003361}{0.003361+0.171652} \approx 0.019209
+	\end{align*}
+
+	\begin{align*}
+		\gamma_{1,B} &= \frac{p\left(x_1 \vert B\right) p\left(B\right)}
+		{p\left(x_1 \vert A\right) p\left(A\right)
+		+ p\left(x_1 \vert B\right) p\left(B\right)}
+		\approx \frac{0.011473}{0.022857+0.011473} \approx 0.334203 \\
+		\gamma_{2,B} &= \frac{p\left(x_2 \vert B\right) p\left(B\right)}
+		{p\left(x_2 \vert A\right) p\left(A\right)
+		+ p\left(x_2 \vert B\right) p\left(B\right)}
+		\approx \frac{0.000767}{0.155404+0.000767} \approx 0.004910 \\
+		\gamma_{3,B} &= \frac{p\left(x_3 \vert B\right) p\left(B\right)}
+		{p\left(x_3 \vert A\right) p\left(A\right)
+		+ p\left(x_3 \vert B\right) p\left(B\right)}
+		\approx \frac{0.171652}{0.003361+0.171652} \approx 0.980791
+	\end{align*}
+
+	\subsubsection*{M-Step.}
+
+	\begin{align*}
+		\mu_A &= \frac{0.5\gamma_{1,A}+1\gamma_{2,A}+0\gamma_{3,A}}{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}
+		\approx \frac{0.5 \cdot 0.665797+1\cdot 0.995090+0\cdot 0.019209}{0.665797+0.995090+0.019209} \approx 0.790424 \\
+		\mu_B &= \frac{0.5\gamma_{1,B}+1\gamma_{2,B}+0\gamma_{3,B}}{\gamma_{1,B}+\gamma_{2,B}+\gamma_{3,B}}
+		\approx \frac{0.5 \cdot 0.334203 + 1 \cdot 0.004910 + 0 \cdot 0.980791}{0.334203 + 0.004910 + 0.980791} \approx 0.130321 \\
+		\pi &= \frac{\gamma_{1,A}+\gamma_{2,A}+\gamma_{3,A}}{3}\approx\frac{0.665797+0.995090+0.019209}{3}\approx0.560032
+	\end{align*}
+
+	\section*{4.}
+
+	\subsection*{(a)}
+	$\textrm{AGNES} > \textrm{DBSCAN} > \textrm{GMM} > \textrm{k-means}$
+
+	The clusters are non-convex in shape which makes it difficult for GMM and k-means to fit them.
+	While both clusters are well defined and separated, they have different densities so it could
+	be difficult to tune DBSCAN to capture both without merging them.
+
+	\subsection*{(b)}
+	$\textrm{GMM} > \textrm{k-means} > \textrm{DBSCAN} > \textrm{AGNES}$
+	
+	The clusters are convex and eliptical, so GMM and k-means should work well. The clusters are
+	close together with some overlap, so DBSCAN and AGNES may join separate clusters.
+
+	\subsection*{(c)}
+	$\textrm{GMM} > \textrm{k-means} > \textrm{DBSCAN} = \textrm{AGNES}$
+
+	The clusters are roughly convex and suitable for finding with GMM and k-means. There is a lot
+	of overlap between the clusters and no clear density break so DBSCAN and AGNES would be prone
+	to joining separate clusters.
+
+	\subsection*{(d)}
+	$\textrm{GMM} > \textrm{k-means} > \textrm{AGNES} > \textrm{DBSCAN}$
+	The clusters are roughly convex and can be clustered with GMM or k-means. The clusters are well
+	defined and have few outliers which could be problematic for AGNES. Two of the clusters are joined
+	by a strand of data points as dense as the clusters themselves, and could be merged by DBSCAN.
+
+	\subsection*{(e)}
+	$\textrm{AGNES} > \textrm{GMM} > \textrm{k-means} > \textrm{DBSCAN}$
+	One of the clusters slightly wraps around the other, but it is still largely separable from it with
+	GMM or k-means. Between the two clusters there is no obvious break in density so DBSCAN might merge
+	them or would have to be tuned so that many points were classified as noise.
+
+	\subsection*{(f)}
+	$\textrm{DBSCAN} > \textrm{AGNES} > \textrm{GMM} = \textrm{k-means}$
+	One of the clusters is entirely surrounded by another, so they cannot be kept separate with GMM or
+	k-means. All of the clusters have well defined areas of dense core points that could be captured
+	with DBSCAN, albeit it at the cost of considering some of the outlying points noise.
+
+	\subsection*{(g)}
+	$\textrm{DBSCAN} > \textrm{AGNES} > \textrm{GMM} = \textrm{k-means}$
+	One of the clusters is wrapped around the other two, so covering it with GMM and k-means without
+	including elements from the other two is impossible. There are areas of lower density between
+	the clusters, so they can potentially kept separate in DBSCAN. AGNES can account for the shape of
+	the clusters, but might have problems with the many outliers in the central two.
+
+	\subsection*{(h)}
+	$\textrm{DBSCAN} = \textrm{AGNES} > \textrm{GMM} = \textrm{k-means}$
+	The clusters are not convex and covering one with an eliptical GMM or k-means clustering would
+	mean including erroneous elements from other clusters. The clusters are well separated with
+	uniform density so DBSCAN and AGNES are unlikely to incorrectly join clusters.
+
+	\section*{5.}	
+
+	\subsection*{(a)}
+	\includegraphics[scale=0.9]{kmeans.png}
+
+	\subsection*{(b)}
+	\begin{tabular}{c | c | c | c}
+		$k$ & $\mu_k$ & $\mu_k-2\sigma_k$ & $\mu_k+2\sigma_k$ \\
+		\hline & & & \\
+		1 & 41562.000000 & 41562.000000 & 41562.000000 \\
+		2 & 29158.418442 & 25819.225611 & 32497.611273 \\
+		3 & 24369.750977 & 22540.051494 & 26199.450461 \\
+		4 & 21063.591137 & 17703.303131 & 24423.879144 \\
+		5 & 18123.257696 & 14730.652325 & 21515.863067 \\
+		6 & 16757.533816 & 13228.550113 & 20286.517518 \\
+		7 & 14546.190494 & 11556.771269 & 17535.609720 \\
+		8 & 13311.097774 & 12016.239597 & 14605.955951 \\
+		9 & 12270.389369 & 10749.060376 & 13791.718362 \\
+		10 & 11685.283172 & 10051.332748 & 13319.233595 \\
+		11 & 11150.440644 & 9808.773622 & 12492.107665 \\
+		12 & 10509.131092 & 8921.560093 & 12096.702090 
+	\end{tabular}
+
+	\subsection*{(c)}
+	As $k$ increases and approaches $N$, the SSE approaches zero. This means
+	that if SSE is used as a criterion for judging clustering, increasing $k$
+	will always improve performance up until the point where $k=N$ and SSE becomes
+	zero.
+
+	\subsection*{(d)}
+	An alternative measure of compactness would be a scatter criterion like the one
+	calculated in part (f) of question 1.
+ 
+\end{document}
