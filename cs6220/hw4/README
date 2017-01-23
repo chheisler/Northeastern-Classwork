@@ -1,0 +1,3 @@
+1. Place the data file 'veh-prime.arff' into the unpacked directory.
+2. Run 'python filter.py' to run the code for problem 1.
+3. Run 'python wrapper.py' to run the code for problem 2.

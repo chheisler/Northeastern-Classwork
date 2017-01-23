@@ -37,13 +37,15 @@ Code for homeworks in which I implemented machine learning algorithms. The code 
 Code homeworks in which I implemented data mining techniques. The code is located in:
 
 * `hw1/`: linear regression (`regress.py`);
-* `hw2/`: k-nearest neighbors (`knn.py`); and
-* `hw3/`: k-means (`kmeans.py`).
+* `hw2/`: k-nearest neighbors (`knn.py`);
+* `hw3/`: k-means (`kmeans.py`); and
+* `hw4/`: feature selection with the filter (`filter.py`) and wrapper (`wrapper.py`) methods.
 
 ##CS6240: Parallel Data Processing in MapReduce (ongoing)
 Code homeworks in which I implemented programs for analyzing large data sets in parallel. The code is located in:
 
 * `hw1/`: analyzing atmospheric data using Java threads;
 * `hw2/`: analyzing atmospheric data using MapReduce;
-* `hw3/`: implementing the PageRank algorithm using MapReduce; and
-* `hw4/`: implementing the PageRank algorithm using Spark.
+* `hw3/`: implementing the PageRank algorithm using MapReduce;
+* `hw4/`: implementing the PageRank algorithm using Spark; and
+* `hw5/`: implementing the PageRank algorithm in Spark using matrix multiplication.
