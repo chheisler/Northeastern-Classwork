@@ -41,7 +41,7 @@ Code homeworks in which I implemented data mining techniques. The code is locate
 * `hw3/`: k-means (`kmeans.py`); and
 * `hw4/`: feature selection with the filter (`filter.py`) and wrapper (`wrapper.py`) methods.
 
-##CS6240: Parallel Data Processing in MapReduce (ongoing)
+##CS6240: Parallel Data Processing in MapReduce
 Code homeworks in which I implemented programs for analyzing large data sets in parallel. The code is located in:
 
 * `hw1/`: analyzing atmospheric data using Java threads;
